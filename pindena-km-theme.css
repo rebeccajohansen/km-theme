@@ -1,10 +1,12 @@
-/* --------------------------------------------------------------------------
-   KM Lite / Pindena theme
-   Goal: ONLY colour + font + links + buttons (+ subtle borders/focus)
-   Explicitly avoids layout: no widths, no padding/margins, no display/float/grid.
-   -------------------------------------------------------------------------- */
+/* ==========================================================================
+   Kongsberg Maritime — Pindena FULL THEME (self-contained)
+   Purpose: full theme when uploaded CSS replaces/overrides default styling.
+   Includes: base reset, grid, typography, panels, forms, buttons, tabs.
+   ========================================================================== */
 
-/* 1) Brand tokens */
+/* -----------------------------
+   1) Tokens
+------------------------------ */
 :root{
   --km-calm-light:#F3F6F7;
   --km-anchor:#2D3A40;
@@ -17,118 +19,387 @@
   --km-white:#FFFFFF;
 
   --km-font:"Segoe UI", Arial, Helvetica, sans-serif;
+
+  --km-radius-sm:4px;
+  --km-radius-md:6px;
+  --km-radius-lg:8px;
+
+  --km-shadow-soft:0 8px 24px rgba(45,58,64,.08);
+
+  --km-space-1:4px;
+  --km-space-2:8px;
+  --km-space-3:12px;
+  --km-space-4:16px;
+  --km-space-5:24px;
+  --km-space-6:32px;
 }
 
-/* 2) Base page */
-html, body, body.showActivity{
-  background:var(--km-calm-light) !important;
-  color:var(--km-anchor) !important;
-  font-family:var(--km-font) !important;
+/* -----------------------------
+   2) Baseline reset (gentle)
+------------------------------ */
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  background:var(--km-calm-light);
+  color:var(--km-anchor);
+  font-family:var(--km-font);
+  font-size:16px;
+  line-height:1.5;
 }
-
-/* 3) Headings (colour + font only) */
-h1,h2,h3,h4,h5,h6,
-.page-title,
-.activity-tab-heading{
-  font-family:var(--km-font) !important;
-  color:var(--km-ocean-depth) !important;
-  font-weight:600 !important;
-}
-
-/* 4) Body text (colour + font only) */
-p, li, dd, dt, label, .form-control, .activity-content{
-  font-family:var(--km-font) !important;
-  color:var(--km-anchor) !important;
-}
-
-small, .text-muted, .breadcrumb, .activity-header, .activity-header *{
-  color:var(--km-anchor-mid) !important;
-}
-
-/* 5) Links */
-a, a:visited{
-  color:var(--km-nordic-teal) !important;
-  text-decoration:none;
-}
+img{ max-width:100%; height:auto; }
+a{ color:var(--km-nordic-teal); text-decoration:none; }
 a:hover, a:focus{
-  color:var(--km-nordic-teal) !important;
   text-decoration:underline;
   text-underline-offset:4px;
   text-decoration-thickness:1px;
 }
+hr{ border:0; border-top:1px solid var(--km-divider); }
 
-/* 6) Tabs (colour only; no spacing/layout changes) */
-.nav-tabs, .tabbar-header, ul.nav-tabs{
-  border-bottom:1px solid var(--km-divider) !important;
+/* -----------------------------
+   3) Container (keeps it tidy)
+------------------------------ */
+.container{
+  width:100%;
+  max-width:1180px;
+  margin-left:auto;
+  margin-right:auto;
+  padding-left:24px;
+  padding-right:24px;
+}
+@media (max-width:768px){
+  .container{ padding-left:16px; padding-right:16px; }
 }
 
+/* -----------------------------
+   4) Typography
+------------------------------ */
+h1,h2,h3,h4,h5,h6{
+  margin:0 0 var(--km-space-3) 0;
+  font-family:var(--km-font);
+  color:var(--km-ocean-depth);
+  font-weight:600;
+  letter-spacing:-0.01em;
+}
+p{ margin:0 0 var(--km-space-3) 0; }
+small, .text-muted{ color:var(--km-anchor-mid); }
+strong{ font-weight:700; }
+
+/* Titles used by Pindena */
+.page-title{
+  font-size:clamp(30px, 3.5vw, 44px);
+  line-height:1.12;
+  margin:var(--km-space-6) 0 var(--km-space-5);
+}
+.activity-tab-heading{
+  font-size:clamp(22px, 2.5vw, 32px);
+  line-height:1.18;
+  margin:var(--km-space-6) 0 var(--km-space-4);
+}
+
+/* -----------------------------
+   5) Grid (Bootstrap-like subset)
+   Supports: .row, .col-md-*, push/pull via flex order
+------------------------------ */
+.row{
+  display:flex;
+  flex-wrap:wrap;
+  margin-left:-15px;
+  margin-right:-15px;
+}
+.row.d-flex{ display:flex; }
+[class^="col-"], [class*=" col-"]{
+  padding-left:15px;
+  padding-right:15px;
+  min-width:0;
+}
+
+/* Default stack on mobile */
+.col-md-1,.col-md-2,.col-md-3,.col-md-4,.col-md-5,.col-md-6,
+.col-md-7,.col-md-8,.col-md-9,.col-md-10,.col-md-11,.col-md-12{
+  flex:0 0 100%;
+  max-width:100%;
+}
+
+/* Desktop md breakpoint */
+@media (min-width:992px){
+  .col-md-3{ flex:0 0 25%; max-width:25%; }
+  .col-md-4{ flex:0 0 33.333333%; max-width:33.333333%; }
+  .col-md-8{ flex:0 0 66.666667%; max-width:66.666667%; }
+  .col-md-9{ flex:0 0 75%; max-width:75%; }
+
+  /* mimic Bootstrap push/pull using flex order */
+  .col-md-push-8{ order:2; }
+  .col-md-pull-4{ order:1; }
+
+  /* offsets used in your markup */
+  .col-md-offset-3{ margin-left:25%; }
+}
+
+.text-right{ text-align:right; }
+
+/* -----------------------------
+   6) Tabs / navigation (minimal)
+------------------------------ */
+.nav-tabs, .tabbar-header, ul.nav-tabs{
+  display:flex;
+  gap:8px;
+  padding:0;
+  margin:0 0 var(--km-space-4) 0;
+  list-style:none;
+  border-bottom:1px solid var(--km-divider);
+}
+.nav-tabs > li{ margin:0; }
 .nav-tabs > li > a,
 .tabbar-header a,
 [role="tab"]{
-  color:var(--km-anchor) !important;
-  font-weight:600 !important;
+  display:inline-block;
+  padding:10px 12px;
+  color:var(--km-anchor);
+  font-weight:600;
+  border-radius:var(--km-radius-sm) var(--km-radius-sm) 0 0;
 }
-
 .nav-tabs > li.active > a,
-.nav-tabs > li.active > a:hover,
-.nav-tabs > li.active > a:focus,
 [role="tab"][aria-selected="true"]{
-  color:var(--km-ocean-depth) !important;
-  background:var(--km-white) !important;
-  border-color:var(--km-divider) !important;
+  background:var(--km-white);
+  border:1px solid var(--km-divider);
+  border-bottom-color:var(--km-white);
+  color:var(--km-ocean-depth);
+  font-weight:700;
 }
 
-/* 7) Panels/cards (colour + border only) */
-.panel, .card, .well{
-  background:var(--km-white) !important;
-  border-color:var(--km-divider) !important;
+/* -----------------------------
+   7) Panels (info box etc.)
+------------------------------ */
+.panel{
+  background:var(--km-white);
+  border:1px solid var(--km-divider);
+  border-radius:var(--km-radius-lg);
+  box-shadow:var(--km-shadow-soft);
+  overflow:hidden;
+  margin:0 0 var(--km-space-5) 0;
 }
-.panel-heading, .card-header{
-  background:var(--km-ocean-depth) !important;
-  border-color:var(--km-ocean-depth) !important;
-  color:var(--km-white) !important;
+.panel-heading{
+  background:var(--km-ocean-depth);
+  border-bottom:1px solid var(--km-ocean-depth);
+  padding:12px 16px;
 }
 .panel-title{
-  color:var(--km-white) !important;
+  margin:0;
+  color:var(--km-white);
+  font-weight:700;
+  font-size:16px;
+}
+.panel-body{
+  padding:16px;
 }
 
-/* 8) Inputs (colour + border + focus only; no sizes) */
-input, select, textarea, .form-control{
-  font-family:var(--km-font) !important;
-  color:var(--km-anchor) !important;
-  background:var(--km-white) !important;
-  border-color:var(--km-divider) !important;
-  box-shadow:none !important;
+/* Event info panel internals (your exact classes) */
+.panel.activity-time-and-place .row{
+  margin-left:0;
+  margin-right:0;
+}
+.panel.activity-time-and-place .row.row-place,
+.panel.activity-time-and-place .row.row-date{
+  display:block;
+  padding:0;
+  margin:0 0 10px 0;
+}
+.panel.activity-time-and-place .activity-info-label{
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.02em;
+  font-weight:700;
+  color:var(--km-anchor-mid);
+  margin:0 0 2px 0;
+}
+.panel.activity-time-and-place .activity-info-value{
+  color:var(--km-anchor);
 }
 
-input:focus, select:focus, textarea:focus, .form-control:focus{
-  border-color:var(--km-nordic-teal) !important;
-  box-shadow:0 0 0 3px rgba(0, 111, 132, 0.16) !important;
-  outline:none !important;
+/* -----------------------------
+   8) Forms (Bootstrap-like, horizontal)
+------------------------------ */
+form{ margin:0; }
+.form-horizontal .form-group{
+  display:flex;
+  flex-wrap:wrap;
+  margin:0 0 var(--km-space-3) 0;
+}
+.form-group:after{ content:""; display:block; clear:both; }
+
+.control-label{
+  font-weight:700;
+  color:var(--km-anchor);
+  padding-top:8px;
+}
+@media (min-width:992px){
+  .form-horizontal .control-label{
+    text-align:right;
+    padding-right:10px;
+  }
 }
 
-/* 9) Buttons
-   - Keep only submit as KM CTA
-   - Keep other buttons/link-buttons calm (no layout impact)
-*/
-input[type="submit"],
-button[type="submit"]{
-  background:var(--km-dynamic-aqua) !important;
-  border-color:var(--km-dynamic-aqua) !important;
-  color:var(--km-ocean-depth) !important;
-  font-family:var(--km-font) !important;
-  font-weight:700 !important;
-  box-shadow:none !important;
+/* Required marker calmer */
+.required-marker{
+  font-weight:400;
+  font-size:.85em;
+  color:var(--km-anchor-mid);
+  opacity:.85;
+  margin-left:6px;
 }
 
-input[type="submit"]:hover,
-button[type="submit"]:hover,
-input[type="submit"]:focus,
-button[type="submit"]:focus{
-  background:var(--km-aqua-dark) !important;
-  border-color:var(--km-aqua-dark) !important;
-  color:var(--km-white) !important;
+/* Inputs */
+.form-control{
+  width:100%;
+  display:block;
+  font-family:var(--km-font);
+  font-size:14px;
+  color:var(--km-anchor);
+  background:var(--km-white);
+  border:1px solid var(--km-divider);
+  border-radius:var(--km-radius-sm);
+  padding:8px 10px;
+  line-height:1.35;
+  box-shadow:none;
+}
+.form-control:focus{
+  outline:none;
+  border-color:var(--km-nordic-teal);
+  box-shadow:0 0 0 3px rgba(0,111,132,.16);
 }
 
-a.btn, .btn-link{
-  background:transparent !important;
+/* Helper / explainer text */
+.help-block,
+.reg-description,
+.help-block.reg-description{
+  display:block;
+  margin-top:4px;
+  color:var(--km-anchor-mid);
+  font-size:13px;
+  line-height:1.35;
+  font-style:italic;
+}
+
+/* Checkbox/radio blocks */
+.checkbox{ margin:0; }
+.checkbox label{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  font-weight:400;
+  color:var(--km-anchor);
+}
+.checkbox input[type="checkbox"]{
+  margin-top:3px;
+}
+
+/* -----------------------------
+   9) Buttons
+------------------------------ */
+.btn{
+  display:inline-block;
+  font-family:var(--km-font);
+  font-weight:700;
+  border-radius:var(--km-radius-md);
+  border:1px solid transparent;
+  cursor:pointer;
+  line-height:1.2;
+}
+.btn-lg{
+  padding:10px 18px;
+  font-size:14px;
+}
+.btn-primary,
+.btn.btn-primary,
+.btn-register{
+  background:var(--km-dynamic-aqua);
+  border-color:var(--km-dynamic-aqua);
+  color:var(--km-ocean-depth);
+}
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-register:hover,
+.btn-register:focus{
+  background:var(--km-aqua-dark);
+  border-color:var(--km-aqua-dark);
+  color:var(--km-white);
+  outline:none;
+}
+
+/* Link-style buttons (if present) */
+.btn-link, a.btn{
+  background:transparent;
+  border:0;
+  color:var(--km-nordic-teal);
+  font-weight:600;
+  padding:0;
+}
+.btn-link:hover, a.btn:hover{ text-decoration:underline; }
+
+/* -----------------------------
+   10) Tables (clean baseline)
+------------------------------ */
+table{
+  width:100%;
+  border-collapse:collapse;
+  color:var(--km-anchor);
+}
+th, td{
+  border:1px solid var(--km-divider);
+  padding:10px 12px;
+  vertical-align:top;
+}
+th{
+  background:var(--km-calm-light);
+  color:var(--km-ocean-depth);
+  font-weight:700;
+}
+
+/* -----------------------------
+   11) Footer (quiet)
+------------------------------ */
+footer, .site-footer{
+  margin-top:24px;
+  padding-top:12px;
+  border-top:1px solid var(--km-divider);
+  color:var(--km-anchor-mid);
+}
+footer a, .site-footer a{
+  color:var(--km-nordic-teal);
+  text-decoration:underline;
+  text-underline-offset:4px;
+}
+
+/* -----------------------------
+   12) Maz/M-country selector (minimal harmony)
+   Keeps the component usable without heavy overrides.
+------------------------------ */
+.m-input-wrapper,
+.m-input-wrapper.m-reset-css,
+.m-select.m-reset-css,
+.m-phone-number-input{
+  font-family:var(--km-font);
+  color:var(--km-anchor);
+}
+.m-input-wrapper.m-reset-css.--default-border{
+  border:1px solid var(--km-divider);
+  border-radius:var(--km-radius-sm);
+  background:var(--km-white);
+}
+.m-input-input{
+  font-family:var(--km-font);
+  color:var(--km-anchor);
+}
+.m-select-input__toggle-button{
+  color:var(--km-anchor);
+}
+
+/* -----------------------------
+   13) Small screen refinements
+------------------------------ */
+@media (max-width:768px){
+  .panel-body{ padding:14px; }
+  .btn-lg{ width:100%; }
+  .text-right{ text-align:left; }
+}
