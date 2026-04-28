@@ -212,33 +212,30 @@ html .site-footer a {
   color: var(--km-nordic-teal) !important;
 }
 
-
 /* ==========================================================================
-   KM PROGRAM TYPOGRAPHY TWEAKS (v2 – Apr 2026)
-   Goal: Reduce visual noise when there are many programme items.
-   - Programme item headings (<h3 class="list-group-item-heading">) should be Anchor and smaller.
-   - Theme header in Program intro should be H4 and Nordic Teal (as a strapline).
+   KM PROGRAM STYLES (final)
+   Decisions locked in:
+   - Program tab heading ("Program") has spacing after (CSS, not inline).
+   - Programme list item titles: Anchor (#2D3A40), Semibold (600), same size as the intro heading (22px).
+   - Intro theme header (h4) remains Nordic Teal, italic, 22px.
+   - Speaker lists: name Semibold (600), organisation Regular (400) in Anchor mid (#5C6972), 14px text, 3px vertical margin.
+   - Supporting text: 14px, Anchor mid.
    ========================================================================== */
 
-/* Programme items: H3 should be Anchor (calmer), slightly smaller, semibold */
-.tab-pane.program h3,
-.tab-pane.program h3.list-group-item-heading {
-  color: var(--km-anchor) !important;
-  font-size: 20px !important;
-  font-weight: 600 !important;
-  line-height: 1.25 !important;
-  margin: 0 0 6px 0 !important;
+/* Space after Program tab heading */
+.tab-pane.program .activity-tab-heading{
+  margin-bottom: 16px !important;
 }
 
-/* Programme item supporting text below H3 (e.g. speaker line) */
-.tab-pane.program .list-group-item-text {
+/* Programme item supporting text below the title */
+.tab-pane.program .list-group-item-text{
   color: var(--km-anchor-mid) !important;
   font-size: 14px !important;
   line-height: 1.45 !important;
 }
 
-/* Theme header in Program intro: use H4 in the intro block */
-.tab-pane.program h4 {
+/* Theme header in Program intro: Nordic Teal strapline */
+.tab-pane.program h4{
   color: var(--km-nordic-teal) !important;
   font-size: 22px !important;
   font-weight: 600 !important;
@@ -247,40 +244,7 @@ html .site-footer a {
   margin: 12px 0 10px 0 !important;
 }
 
-@media (max-width: 480px) {
-  .tab-pane.program h3,
-  .tab-pane.program h3.list-group-item-heading {
-    font-size: 19px !important;
-  }
-  .tab-pane.program h4 {
-    font-size: 20px !important;
-  }
-}
-/* Program – speaker subtext (KM) */
-.tab-pane.program .km-speakers{
-  margin-top: 6px;
-}
-
-.tab-pane.program .km-speaker{
-  margin: 4px 0;
-  line-height: 1.45;
-  font-size: 15px;
-  color: #2d3a40; /* Anchor */
-  font-family: "Segoe UI", Arial, Helvetica, sans-serif;
-}
-
-.tab-pane.program .km-speaker .km-name{
-  font-weight: 600;
-}
-
-.tab-pane.program .km-speaker .km-org{
-  color: #5c6972; /* Anchor-mid */
-  font-weight: 400;
-}
-/* =========================
-   Program list tiles – titles
-   Make titles Anchor + match intro header size
-   ========================= */
+/* Programme list tiles – titles (Anchor + 22px) */
 .tab-pane.program .list-group.list-group-program .list-group-item a,
 .tab-pane.program .list-group.list-group-program .list-group-item .list-group-item-heading,
 .tab-pane.program .list-group.list-group-program .list-group-item h3,
@@ -292,7 +256,6 @@ html .site-footer a {
   text-decoration: none !important;
 }
 
-/* Optional: keep hover behaviour subtle (still feels clickable) */
 .tab-pane.program .list-group.list-group-program .list-group-item a:hover,
 .tab-pane.program .list-group.list-group-program .list-group-item a:focus{
   color: var(--km-anchor) !important;
@@ -300,7 +263,43 @@ html .site-footer a {
   text-underline-offset: 4px;
 }
 
+/* Time label stays secondary */
 .tab-pane.program .list-group.list-group-program .list-group-item .program-time{
   color: var(--km-anchor-mid) !important;   /* #5C6972 */
   font-weight: 400 !important;
+}
+
+/* Speaker subtext blocks you insert in source code */
+.tab-pane.program .km-speakers{
+  margin-top: 6px;
+}
+
+.tab-pane.program .km-speaker{
+  margin: 3px 0;
+  line-height: 1.45;
+  font-size: 14px;
+  color: var(--km-anchor) !important;
+  font-family: var(--km-font) !important;
+}
+
+.tab-pane.program .km-speaker .km-name{
+  font-weight: 600;
+}
+
+.tab-pane.program .km-speaker .km-org{
+  color: var(--km-anchor-mid) !important;
+  font-weight: 400;
+}
+
+@media (max-width: 480px){
+  .tab-pane.program h4{
+    font-size: 20px !important;
+  }
+
+  .tab-pane.program .list-group.list-group-program .list-group-item a,
+  .tab-pane.program .list-group.list-group-program .list-group-item .list-group-item-heading,
+  .tab-pane.program .list-group.list-group-program .list-group-item h3,
+  .tab-pane.program .list-group.list-group-program .list-group-item h4{
+    font-size: 20px !important;
+  }
 }
