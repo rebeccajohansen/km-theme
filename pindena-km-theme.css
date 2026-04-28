@@ -211,40 +211,48 @@ html body .required-marker {
 html .site-footer a {
   color: var(--km-nordic-teal) !important;
 }
+
+
 /* ==========================================================================
-   KM PROGRAM TYPOGRAPHY TWEAKS (Apr 2026)
-   - Program item headings currently render as <h3 class="list-group-item-heading">
-     Make these Nordic Teal for clearer hierarchy.
-   - Use <h4> for the seminar theme title in the Program intro.
-     Make it Anchor, 20px, 600 weight.
+   KM PROGRAM TYPOGRAPHY TWEAKS (v2 – Apr 2026)
+   Goal: Reduce visual noise when there are many programme items.
+   - Programme item headings (<h3 class="list-group-item-heading">) should be Anchor and smaller.
+   - Theme header in Program intro should be H4 and Nordic Teal (as a strapline).
    ========================================================================== */
 
-/* Program tab: make H3 headings Nordic Teal (not Ocean Depth) */
+/* Programme items: H3 should be Anchor (calmer), slightly smaller, semibold */
 .tab-pane.program h3,
 .tab-pane.program h3.list-group-item-heading {
-  color: var(--km-nordic-teal) !important;
-}
-
-/* Program tab: define an H4 style for the seminar theme title (use H4 in the intro) */
-.tab-pane.program h4 {
   color: var(--km-anchor) !important;
   font-size: 20px !important;
   font-weight: 600 !important;
   line-height: 1.25 !important;
+  margin: 0 0 6px 0 !important;
+}
+
+/* Programme item supporting text below H3 (e.g. speaker line) */
+.tab-pane.program .list-group-item-text {
+  color: var(--km-anchor-mid) !important;
+  font-size: 14px !important;
+  line-height: 1.45 !important;
+}
+
+/* Theme header in Program intro: use H4 in the intro block */
+.tab-pane.program h4 {
+  color: var(--km-nordic-teal) !important;
+  font-size: 22px !important;
+  font-weight: 600 !important;
+  font-style: italic !important;
+  line-height: 1.25 !important;
   margin: 12px 0 10px 0 !important;
 }
 
-/* Optional: keep H4 from being treated too small on mobile */
 @media (max-width: 480px) {
-  .tab-pane.program h4 {
+  .tab-pane.program h3,
+  .tab-pane.program h3.list-group-item-heading {
     font-size: 19px !important;
   }
+  .tab-pane.program h4 {
+    font-size: 20px !important;
+  }
 }
-``` [2](blob:https://m365.cloud.microsoft/0773aac1-f63b-423d-ad4d-18ea8f816105)[1](https://masterx-my.sharepoint.com/personal/rebecca_jane_johansen_km_kongsberg_com/Documents/Microsoft%20Copilot%20Chat%20Files/KM_Pindena_theme_combined_absolutefonts.css)
-
-
-Example:
-
-```html
-<h4>Når havet blir geopolitikk</h4>
-<p>Press på handelsrutene …</p>
