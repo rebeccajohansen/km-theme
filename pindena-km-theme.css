@@ -175,16 +175,15 @@ ul.nav-tabs {
 
 
 /* --------------------------------------------------------------------------
-   6. Buttons and calls to action
+   6. Buttons and link-style actions
    -------------------------------------------------------------------------- */
 
+/* Real form actions only */
 button,
-.btn,
 .btn-primary,
 .btn-success,
 input[type="submit"],
-input[type="button"],
-a.btn {
+input[type="button"] {
   background: var(--km-dynamic-aqua) !important;
   border: 1px solid var(--km-dynamic-aqua) !important;
   color: var(--km-ocean-depth) !important;
@@ -199,8 +198,6 @@ a.btn {
 
 button:hover,
 button:focus,
-.btn:hover,
-.btn:focus,
 .btn-primary:hover,
 .btn-primary:focus,
 .btn-success:hover,
@@ -208,34 +205,37 @@ button:focus,
 input[type="submit"]:hover,
 input[type="submit"]:focus,
 input[type="button"]:hover,
-input[type="button"]:focus,
-a.btn:hover,
-a.btn:focus {
+input[type="button"]:focus {
   background: var(--km-aqua-dark) !important;
   border-color: var(--km-aqua-dark) !important;
   color: var(--km-white) !important;
+}
+
+/* Link buttons should behave like links, not blocks/buttons */
+a.btn,
+.btn-link {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: var(--km-nordic-teal) !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  font-weight: 600 !important;
   text-decoration: none !important;
 }
 
-.btn-default,
-.btn-secondary,
-button.btn-default {
-  background: var(--km-white) !important;
-  border: 1px solid var(--km-divider) !important;
-  color: var(--km-anchor) !important;
-}
-
-.btn-default:hover,
-.btn-secondary:hover,
-button.btn-default:hover {
-  background: var(--km-calm-light) !important;
-  border-color: var(--km-nordic-teal) !important;
+a.btn:hover,
+a.btn:focus,
+.btn-link:hover,
+.btn-link:focus {
   color: var(--km-nordic-teal) !important;
+  text-decoration: underline !important;
+  text-underline-offset: 4px;
 }
 
 
 /* --------------------------------------------------------------------------
-   7. Content cards / panels
+   7. General panels
    -------------------------------------------------------------------------- */
 
 .panel,
@@ -261,45 +261,6 @@ button.btn-default:hover {
   padding: 20px !important;
 }
 
-/* --------------------------------------------------------------------------
-   7a. Information panel: time and place
-   -------------------------------------------------------------------------- */
-
-.panel.activity-time-and-place .panel-body {
-  padding: 24px 28px !important;
-}
-
-.panel.activity-time-and-place .row.row-date {
-  display: grid !important;
-  grid-template-columns: 180px minmax(0, 1fr);
-  gap: 16px;
-  align-items: baseline;
-  margin: 0 0 14px 0 !important;
-  padding: 0 !important;
-  background: transparent !important;
-  border: 0 !important;
-  box-shadow: none !important;
-}
-
-.panel.activity-time-and-place .activity-info-label,
-.panel.activity-time-and-place .activity-info-value,
-.panel.activity-time-and-place .activity-info-value div {
-  margin: 0 !important;
-  padding: 0 !important;
-  background: transparent !important;
-  border: 0 !important;
-  box-shadow: none !important;
-  border-radius: 0 !important;
-}
-
-.panel.activity-time-and-place .activity-info-label {
-  font-weight: 700 !important;
-  color: var(--km-anchor) !important;
-}
-
-.panel.activity-time-and-place .activity-info-value {
-  color: var(--km-anchor) !important;
-}
 
 /* --------------------------------------------------------------------------
    8. Information panel: time and place
@@ -317,22 +278,33 @@ button.btn-default:hover {
   background: var(--km-ocean-depth) !important;
   min-height: 28px;
   border: 0 !important;
-  border-radius: var(--km-radius-lg) var(--km-radius-lg) 0 0 !important;
 }
 
 .panel.activity-time-and-place .panel-body {
   padding: 24px 28px !important;
 }
 
+/* Reset all nested Bootstrap/Pindena row styling inside this panel */
+.panel.activity-time-and-place .panel-body .row,
+.panel.activity-time-and-place .panel-body .row-date,
+.panel.activity-time-and-place .panel-body [class*="col-"],
+.panel.activity-time-and-place .activity-info-label,
+.panel.activity-time-and-place .activity-info-value,
+.panel.activity-time-and-place .activity-info-value div {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+}
+
+/* Create clean label/value rows */
 .panel.activity-time-and-place .row.row-date {
   display: grid !important;
   grid-template-columns: 180px minmax(0, 1fr);
-  gap: 16px;
+  column-gap: 20px;
   align-items: baseline;
-  margin: 0 0 14px 0 !important;
-  padding: 0 !important;
-  background: transparent !important;
-  border: 0 !important;
+  margin: 0 0 12px 0 !important;
 }
 
 .panel.activity-time-and-place .row.row-date:last-child {
@@ -342,24 +314,11 @@ button.btn-default:hover {
 .panel.activity-time-and-place .activity-info-label {
   font-weight: 700 !important;
   color: var(--km-anchor) !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  background: transparent !important;
-  border: 0 !important;
-  box-shadow: none !important;
 }
 
 .panel.activity-time-and-place .activity-info-value,
 .panel.activity-time-and-place .activity-info-value div {
   color: var(--km-anchor) !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  background: transparent !important;
-  border: 0 !important;
-  box-shadow: none !important;
-  border-radius: 0 !important;
-}
-
 
 /* --------------------------------------------------------------------------
    9. Forms
