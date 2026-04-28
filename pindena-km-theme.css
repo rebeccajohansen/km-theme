@@ -1,7 +1,7 @@
 /* --------------------------------------------------------------------------
    Kongsberg Maritime / Pindena custom theme
    Purpose: controlled KM brand layer on top of Pindena default styles.
-   Notes: keep overrides focused and avoid broad selectors that affect form internals.
+   Key rule: NEVER override Pindena/Bootstrap layout mechanics (.row / cols)
    -------------------------------------------------------------------------- */
 
 
@@ -72,14 +72,12 @@ h6,
   letter-spacing: -0.01em;
 }
 
-html body main .page-title,
 .page-title {
   font-size: clamp(34px, 4vw, 48px) !important;
   line-height: 1.12 !important;
   margin: 32px 0 24px !important;
 }
 
-html body main .activity-tab-heading,
 .activity-tab-heading {
   font-size: clamp(26px, 3vw, 34px) !important;
   line-height: 1.18 !important;
@@ -91,8 +89,7 @@ li,
 dd,
 dt,
 label,
-.form-control,
-.activity-content {
+.form-control {
   color: var(--km-anchor) !important;
   font-family: var(--km-font) !important;
 }
@@ -100,7 +97,6 @@ label,
 small,
 .text-muted,
 .breadcrumb,
-.breadcrumb a,
 .activity-header,
 .activity-header * {
   color: var(--km-anchor-mid) !important;
@@ -137,8 +133,7 @@ a:focus {
    -------------------------------------------------------------------------- */
 
 .nav-tabs,
-.tabbar-header,
-ul.nav-tabs {
+.tabbar-header {
   border-bottom: 1px solid var(--km-divider) !important;
 }
 
@@ -151,19 +146,7 @@ ul.nav-tabs {
   border-color: transparent !important;
 }
 
-.nav-tabs > li > a:hover,
-.tabbar-header a:hover,
-[role="tab"]:hover {
-  color: var(--km-nordic-teal) !important;
-  background: transparent !important;
-  border-color: transparent !important;
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-
 .nav-tabs > li.active > a,
-.nav-tabs > li.active > a:hover,
-.nav-tabs > li.active > a:focus,
 [role="tab"][aria-selected="true"] {
   color: var(--km-ocean-depth) !important;
   background: var(--km-white) !important;
@@ -174,82 +157,38 @@ ul.nav-tabs {
 
 
 /* --------------------------------------------------------------------------
-   6. Actions and link-style controls
+   6. Actions
    -------------------------------------------------------------------------- */
 
-/* Button-style links should behave like links */
 a.btn,
 .btn-link {
-  background: transparent !important;
+  background: none !important;
   border: 0 !important;
-  box-shadow: none !important;
   color: var(--km-nordic-teal) !important;
   padding: 0 !important;
-  border-radius: 0 !important;
   font-weight: 600 !important;
-  text-decoration: none !important;
 }
 
-a.btn:hover,
-a.btn:focus,
-.btn-link:hover,
-.btn-link:focus {
-  color: var(--km-nordic-teal) !important;
-  text-decoration: underline !important;
-  text-underline-offset: 4px;
-}
-
-/* Only true submit actions use the KM primary action treatment */
 input[type="submit"],
 button[type="submit"] {
   background: var(--km-dynamic-aqua) !important;
   border: 1px solid var(--km-dynamic-aqua) !important;
   color: var(--km-ocean-depth) !important;
-  font-family: var(--km-font) !important;
   font-weight: 700 !important;
   border-radius: var(--km-radius-md) !important;
   padding: 10px 18px !important;
-  line-height: 1.3 !important;
-  box-shadow: none !important;
-  text-decoration: none !important;
 }
 
 input[type="submit"]:hover,
-input[type="submit"]:focus,
-button[type="submit"]:hover,
-button[type="submit"]:focus {
+button[type="submit"]:hover {
   background: var(--km-aqua-dark) !important;
   border-color: var(--km-aqua-dark) !important;
   color: var(--km-white) !important;
 }
 
-/* Ordinary interface buttons must not become KM CTAs */
-button:not([type="submit"]),
-button[type="button"],
-button:not([type]),
-.btn:not(.btn-primary):not(.btn-success),
-.m-country-selector__flag-button,
-.m-country-selector__select,
-[id^="country-selector-flag-button"] {
-  background: transparent !important;
-  border: 0 !important;
-  box-shadow: none !important;
-  color: var(--km-anchor) !important;
-  font-family: var(--km-font) !important;
-  padding: 0 !important;
-  border-radius: 0 !important;
-}
-
-/* Keep phone/country selector controls calm */
-.m-phone-number-input button,
-.m-country-selector button {
-  background: transparent !important;
-  border: 0 !important;
-  box-shadow: none !important;
-}
 
 /* --------------------------------------------------------------------------
-   7. General panels
+   7. Panels & cards
    -------------------------------------------------------------------------- */
 
 .panel,
@@ -265,19 +204,12 @@ button:not([type]),
 .card-header {
   background: var(--km-ocean-depth) !important;
   color: var(--km-white) !important;
-  border-color: var(--km-ocean-depth) !important;
-  border-radius: var(--km-radius-lg) var(--km-radius-lg) 0 0 !important;
   font-weight: 700 !important;
-}
-
-.panel-body,
-.card-body {
-  padding: 20px !important;
 }
 
 
 /* --------------------------------------------------------------------------
-   8. Information panel: time and place
+   8. Event info panel – SAFE (no layout overrides)
    -------------------------------------------------------------------------- */
 
 .panel.activity-time-and-place {
@@ -288,54 +220,27 @@ button:not([type]),
   overflow: hidden;
 }
 
-.panel.activity-time-and-place .panel-heading {
-  background: var(--km-ocean-depth) !important;
-  min-height: 28px;
-  border: 0 !important;
-  border-radius: var(--km-radius-lg) var(--km-radius-lg) 0 0 !important;
-}
-
 .panel.activity-time-and-place .panel-body {
   padding: 24px 28px !important;
 }
 
-/* Reset nested Bootstrap/Pindena row styling inside this panel only */
-.panel.activity-time-and-place .panel-body .row,
-.panel.activity-time-and-place .panel-body .row-date,
-.panel.activity-time-and-place .panel-body [class*="col-"],
-.panel.activity-time-and-place .activity-info-label,
-.panel.activity-time-and-place .activity-info-value,
-.panel.activity-time-and-place .activity-info-value div {
-  background: transparent !important;
-  border: 0 !important;
-  box-shadow: none !important;
-  border-radius: 0 !important;
-  padding: 0 !important;
-}
-
-/* Clean label/value rows */
-.panel.activity-time-and-place .row.row-date {
-  display: grid !important;
+/* Content-only styling – no .row or column overrides */
+.panel.activity-time-and-place .activity-info {
+  display: grid;
   grid-template-columns: 180px minmax(0, 1fr);
   column-gap: 20px;
-  align-items: baseline;
-  margin: 0 0 12px 0 !important;
-}
-
-.panel.activity-time-and-place .row.row-date:last-child {
-  margin-bottom: 0 !important;
+  row-gap: 12px;
 }
 
 .panel.activity-time-and-place .activity-info-label {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
   font-weight: 700 !important;
-  color: var(--km-anchor) !important;
-  margin: 0 !important;
 }
 
-.panel.activity-time-and-place .activity-info-value,
-.panel.activity-time-and-place .activity-info-value div {
-  color: var(--km-anchor) !important;
-  margin: 0 !important;
+.panel.activity-time-and-place .activity-info-value {
+  margin: 0;
 }
 
 
@@ -343,8 +248,7 @@ button:not([type]),
    9. Forms
    -------------------------------------------------------------------------- */
 
-.form-group,
-.form-row {
+.form-group {
   margin-bottom: 12px !important;
 }
 
@@ -355,167 +259,65 @@ textarea,
   background: var(--km-white) !important;
   border: 1px solid var(--km-divider) !important;
   border-radius: var(--km-radius-sm) !important;
-  color: var(--km-anchor) !important;
-  font-family: var(--km-font) !important;
   box-shadow: none !important;
 }
 
-input[type="text"],
-input[type="email"],
-input[type="tel"],
-textarea,
-.form-control {
-  min-height: 36px;
-  padding: 7px 10px !important;
-}
-
-#form input[type="text"],
-#form input[type="email"],
-#form input[type="tel"],
-#form textarea,
-#form .form-control {
-  max-width: 420px;
-  width: 100%;
-}
-
 input:focus,
-select:focus,
 textarea:focus,
 .form-control:focus {
   border-color: var(--km-nordic-teal) !important;
   box-shadow: 0 0 0 3px rgba(0, 111, 132, 0.16) !important;
-  outline: none !important;
 }
 
-label {
-  font-weight: 600 !important;
-  color: var(--km-anchor) !important;
+#form .form-control {
+  max-width: 420px;
 }
 
 
 /* --------------------------------------------------------------------------
-   10. Tables
+   10. Checkboxes / grouped options
    -------------------------------------------------------------------------- */
 
-table {
-  color: var(--km-anchor) !important;
-  border-color: var(--km-divider) !important;
-}
-
-th {
-  background: var(--km-calm-light) !important;
-  color: var(--km-ocean-depth) !important;
-  font-weight: 700 !important;
-}
-
-td,
-th {
-  border-color: var(--km-divider) !important;
+.form-group fieldset {
+  padding: 12px 16px;
+  border: 1px solid var(--km-divider);
+  border-radius: var(--km-radius-md);
+  background: var(--km-white);
 }
 
 
 /* --------------------------------------------------------------------------
-   11. Footer
+   11. CAPTCHA spacing
+   -------------------------------------------------------------------------- */
+
+.g-recaptcha {
+  margin-top: 16px;
+  margin-bottom: 20px;
+}
+
+
+/* --------------------------------------------------------------------------
+   12. Footer
    -------------------------------------------------------------------------- */
 
 footer,
-.site-footer,
-.container.site-footer {
-  background: transparent !important;
-  color: var(--km-anchor-mid) !important;
+.site-footer {
   border-top: 1px solid var(--km-divider) !important;
   padding-top: 12px !important;
   margin-top: 24px !important;
 }
 
-footer *,
-.site-footer *,
-.container.site-footer * {
-  color: var(--km-anchor-mid) !important;
-}
-
-footer a,
-.site-footer a {
-  color: var(--km-nordic-teal) !important;
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-
 
 /* --------------------------------------------------------------------------
-   12. Watermark / decorative background elements
-   -------------------------------------------------------------------------- */
-
-.watermark {
-  opacity: 0.06 !important;
-}
-
-
-/* --------------------------------------------------------------------------
-   13. Responsive refinements
+   13. Responsive
    -------------------------------------------------------------------------- */
 
 @media (max-width: 768px) {
-  main#app.container,
-  #app.container,
-  .container {
-    padding-left: 16px;
-    padding-right: 16px;
+  .panel.activity-time-and-place .activity-info {
+    display: block;
   }
 
-  html body main .page-title,
-  .page-title {
-    font-size: 34px !important;
-    margin-top: 24px !important;
-  }
-
-  html body main .activity-tab-heading,
-  .activity-tab-heading {
-    font-size: 26px !important;
-  }
-
-  .panel.activity-time-and-place .row.row-date {
-    display: block !important;
-    margin-bottom: 16px !important;
-  }
-
-  .panel.activity-time-and-place .activity-info-label {
-    margin-bottom: 2px !important;
-  }
-
-  input[type="submit"],
-  button[type="submit"] {
+  input[type="submit"] {
     min-height: 44px;
   }
-}
-
-/* --------------------------------------------------------------------------
-   14. Final override: prevent ordinary UI buttons becoming aqua CTAs
-   -------------------------------------------------------------------------- */
-
-button[type="button"],
-button:not([type]),
-.m-country-selector__flag-button,
-.m-country-selector__select,
-[id^="country-selector-flag-button"] {
-  background: transparent !important;
-  border: 0 !important;
-  color: var(--km-anchor) !important;
-  box-shadow: none !important;
-  padding: 0 !important;
-  border-radius: 0 !important;
-}
-
-.m-phone-number-input button,
-.m-country-selector button {
-  background: transparent !important;
-  border: 0 !important;
-  box-shadow: none !important;
-}
-
-input[type="submit"],
-button[type="submit"] {
-  background: var(--km-dynamic-aqua) !important;
-  border: 1px solid var(--km-dynamic-aqua) !important;
-  color: var(--km-ocean-depth) !important;
 }
