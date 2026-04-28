@@ -256,3 +256,24 @@ html .site-footer a {
     font-size: 20px !important;
   }
 }
+/* Program – speaker subtext (KM) */
+.tab-pane.program .km-speakers{
+  margin-top: 6px;
+}
+
+.tab-pane.program .km-speaker{
+  margin: 4px 0;
+  line-height: 1.45;
+  font-size: 15px;
+  color: #2d3a40; /* Anchor */
+  font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+}
+
+.tab-pane.program .km-speaker .km-name{
+  font-weight: 600;
+}
+
+.tab-pane.program .km-speaker .km-org{
+  color: #5c6972; /* Anchor-mid */
+  font-weight: 400;
+}
