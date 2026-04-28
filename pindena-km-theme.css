@@ -506,7 +506,6 @@ button:not([type]),
   border-radius: 0 !important;
 }
 
-/* Keep phone selector visually calm */
 .m-phone-number-input button,
 .m-country-selector button {
   background: transparent !important;
@@ -514,7 +513,6 @@ button:not([type]),
   box-shadow: none !important;
 }
 
-/* Only the actual registration submit remains a primary action */
 input[type="submit"],
 button[type="submit"] {
   background: var(--km-dynamic-aqua) !important;
