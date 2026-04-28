@@ -235,7 +235,7 @@ button.btn-default:hover {
 
 
 /* --------------------------------------------------------------------------
-   7. General panels
+   7. Content cards / panels
    -------------------------------------------------------------------------- */
 
 .panel,
@@ -261,6 +261,45 @@ button.btn-default:hover {
   padding: 20px !important;
 }
 
+/* --------------------------------------------------------------------------
+   7a. Information panel: time and place
+   -------------------------------------------------------------------------- */
+
+.panel.activity-time-and-place .panel-body {
+  padding: 24px 28px !important;
+}
+
+.panel.activity-time-and-place .row.row-date {
+  display: grid !important;
+  grid-template-columns: 180px minmax(0, 1fr);
+  gap: 16px;
+  align-items: baseline;
+  margin: 0 0 14px 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.panel.activity-time-and-place .activity-info-label,
+.panel.activity-time-and-place .activity-info-value,
+.panel.activity-time-and-place .activity-info-value div {
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+.panel.activity-time-and-place .activity-info-label {
+  font-weight: 700 !important;
+  color: var(--km-anchor) !important;
+}
+
+.panel.activity-time-and-place .activity-info-value {
+  color: var(--km-anchor) !important;
+}
 
 /* --------------------------------------------------------------------------
    8. Information panel: time and place
