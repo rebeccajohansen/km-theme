@@ -223,12 +223,30 @@ button[type="submit"]:focus {
   color: var(--km-white) !important;
 }
 
-/* Do not force every ordinary button into CTA styling */
+/* Ordinary interface buttons must not become KM CTAs */
 button:not([type="submit"]),
-.btn:not(.btn-primary):not(.btn-success) {
+button[type="button"],
+button:not([type]),
+.btn:not(.btn-primary):not(.btn-success),
+.m-country-selector__flag-button,
+.m-country-selector__select,
+[id^="country-selector-flag-button"] {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: var(--km-anchor) !important;
   font-family: var(--km-font) !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
 }
 
+/* Keep phone/country selector controls calm */
+.m-phone-number-input button,
+.m-country-selector button {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
 
 /* --------------------------------------------------------------------------
    7. General panels
@@ -468,5 +486,38 @@ footer a,
   input[type="submit"],
   button[type="submit"] {
     min-height: 44px;
+
+     /* --------------------------------------------------------------------------
+   Final override: prevent ordinary UI buttons becoming aqua CTAs
+   -------------------------------------------------------------------------- */
+
+button[type="button"],
+button:not([type]),
+.m-country-selector__flag-button,
+.m-country-selector__select,
+[id^="country-selector-flag-button"] {
+  background: transparent !important;
+  border: 0 !important;
+  color: var(--km-anchor) !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+}
+
+/* Keep phone selector visually calm */
+.m-phone-number-input button,
+.m-country-selector button {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Only the actual registration submit remains a primary action */
+input[type="submit"],
+button[type="submit"] {
+  background: var(--km-dynamic-aqua) !important;
+  border: 1px solid var(--km-dynamic-aqua) !important;
+  color: var(--km-ocean-depth) !important;
+}
   }
 }
