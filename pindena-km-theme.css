@@ -211,3 +211,40 @@ html body .required-marker {
 html .site-footer a {
   color: var(--km-nordic-teal) !important;
 }
+/* ==========================================================================
+   KM PROGRAM TYPOGRAPHY TWEAKS (Apr 2026)
+   - Program item headings currently render as <h3 class="list-group-item-heading">
+     Make these Nordic Teal for clearer hierarchy.
+   - Use <h4> for the seminar theme title in the Program intro.
+     Make it Anchor, 20px, 600 weight.
+   ========================================================================== */
+
+/* Program tab: make H3 headings Nordic Teal (not Ocean Depth) */
+.tab-pane.program h3,
+.tab-pane.program h3.list-group-item-heading {
+  color: var(--km-nordic-teal) !important;
+}
+
+/* Program tab: define an H4 style for the seminar theme title (use H4 in the intro) */
+.tab-pane.program h4 {
+  color: var(--km-anchor) !important;
+  font-size: 20px !important;
+  font-weight: 600 !important;
+  line-height: 1.25 !important;
+  margin: 12px 0 10px 0 !important;
+}
+
+/* Optional: keep H4 from being treated too small on mobile */
+@media (max-width: 480px) {
+  .tab-pane.program h4 {
+    font-size: 19px !important;
+  }
+}
+``` [2](blob:https://m365.cloud.microsoft/0773aac1-f63b-423d-ad4d-18ea8f816105)[1](https://masterx-my.sharepoint.com/personal/rebecca_jane_johansen_km_kongsberg_com/Documents/Microsoft%20Copilot%20Chat%20Files/KM_Pindena_theme_combined_absolutefonts.css)
+
+
+Example:
+
+```html
+<h4>Når havet blir geopolitikk</h4>
+<p>Press på handelsrutene …</p>
