@@ -1,0 +1,2056 @@
+/* ==========================================================================
+   Kongsberg Maritime — Pindena web theme
+   ==========================================================================
+
+   Version: 2.5
+   Last updated: 10 September 2026
+   Owner: Kongsberg Maritime Brand Identity
+
+   Status
+   Definitive Kongsberg Maritime visual styling layer for Pindena event,
+   programme and registration pages.
+
+   Design alignment
+   This implementation is aligned to:
+   - the current Kongsberg Maritime digital colour system;
+   - current live KM interaction behaviour for buttons and focus states;
+   - approved light-mode form patterns in the KM web design system;
+   - established Pindena-specific programme, registration, participant,
+     summary, product-selection and responsive-navigation requirements.
+
+   Scope
+   This file is an override layer. It does not replace Pindena, Bootstrap or
+   Maz UI vendor styles and must be loaded after them.
+
+   Typography
+   Segoe UI is the approved typeface for the current Pindena implementation.
+   Do not introduce, host or embed additional brand fonts without approval
+   from Kongsberg Maritime.
+
+   Email
+   Pindena email templates are outside the scope of this stylesheet. Email
+   styling must be implemented with inline HTML styles for email-client
+   compatibility.
+
+   Implementation requirements
+   1. Load this file after all Pindena/vendor CSS.
+   2. Do not copy vendor CSS into this file.
+   3. Keep the brand tokens and component roles defined here intact.
+   4. If Pindena markup changes, update the selector mapping only; do not
+      recreate the design system ad hoc.
+   5. Preserve Pindena functionality, semantics, validation and accessibility.
+   6. Use functional colours only for status, validation and destructive states.
+      Heritage Red is not an error colour.
+   7. Pindena owns platform structure, positioning and application behaviour.
+      This file owns Kongsberg Maritime visual presentation. A small set of
+      compatibility rules is included where Pindena's custom-theme mode does
+      not preserve the default navigation/tab visibility rules required for
+      the public event pages to function correctly.
+   8. Registration-specific typography, helper text, pricing metadata and
+      generic form actions are scoped to the registration tab to avoid
+      unintended styling of unrelated Pindena forms or controls.
+   9. Rich-text content should use semantic HTML only. Editors should apply
+      headings, paragraphs, lists and links; this stylesheet controls their
+      visual presentation. Avoid inline font, colour and spacing styles.
+
+   Pindena selector dependencies used by this theme
+   ------------------------------------------------
+   Page:              body.showActivity, main#app
+   Page title:        .page-title
+   Tabs:              .tabbar-header, .tabbar-toggle, .tabbar-collapse,
+                      .nav-tabs, [role="tab"]
+   Tab heading:       .activity-tab-heading
+   Registration:      body.showActivity main#app .tab-pane.form#form
+   Summary:           .registration-summary
+   Products:          .product-input, .reg-extra-participant
+   Event information: .activity-time-and-place
+   Programme:         .tab-pane.program, .list-group-program
+   Participants:      .tab-pane.participants, .list-group-participants
+   Status:            .badge.*, .event-is-full, .event-is-available
+   Overlays:          .dropdown-menu, .modal, .tooltip, .swal-modal
+   Footer:            .site-footer
+   Phone selector:    .m-phone-number-input, .m-country-selector
+   ========================================================================== */
+
+
+/* --------------------------------------------------------------------------
+   1. Design tokens
+   -------------------------------------------------------------------------- */
+
+:root {
+  /* Core neutrals */
+  --km-calm-light: #F3F6F7;
+  --km-calm-light-01: #EAF0F3;
+  --km-calm-light-02: #DCE2E5;
+  --km-white: #FFFFFF;
+
+  --km-anchor: #2D3A40;
+  --km-anchor-dark: #1B2428;
+  --km-anchor-mid: #5C6972;
+  --km-anchor-light: #C6CED2;
+
+  /* Core brand colours */
+  --km-ocean-depth: #08435A;
+  --km-ocean-depth-dark: #032A39;
+  --km-nordic-teal: #006F84;
+  --km-nordic-teal-dark: #004C56;
+  --km-nordic-teal-light: #9ED0D9;
+
+  /* Digital interaction colours */
+  --km-dynamic-aqua: #3FBAC2;
+  --km-aqua-hover: #39919B;
+  --km-aqua-light: #D2EFF2;
+  --km-arctic-cyan: #00D6E6;
+
+  /* Supporting neutral */
+  --km-driftwood: #E6E2DD;
+
+  /* Functional/system colours — never use as brand expression */
+  --km-success: #5E9E2A;
+  --km-success-light: #DCEBCF;
+  --km-warning: #EF9F2A;
+  --km-warning-light: #FDEFD5;
+  --km-error: #E02636;
+  --km-error-dark: #BB202D;
+  --km-error-light: #F9D4D7;
+
+  /* UI neutrals */
+  --km-divider: #D6DDE0;
+  --km-control-border: #64686D;
+  --km-placeholder: #B3B7BC;
+
+  /* Typography */
+  --km-font: "Segoe UI", Arial, Helvetica, sans-serif;
+
+  /* Type roles */
+  --km-type-body-size: 16px;
+  --km-type-body-line: 23px;
+  --km-type-small-size: 14px;
+  --km-type-small-line: 22px;
+  --km-type-ui-size: 14px;
+  --km-type-ui-line: 20px;
+
+  /* Spacing scale */
+  --km-space-1: 4px;
+  --km-space-2: 8px;
+  --km-space-3: 12px;
+  --km-space-4: 16px;
+  --km-space-5: 24px;
+  --km-space-6: 32px;
+  --km-space-7: 48px;
+  --km-space-8: 64px;
+
+  /* Radius roles */
+  --km-radius-control: 2px;
+  --km-radius-row: 4px;
+  --km-radius-card: 8px;
+  --km-radius-action: 10px;
+
+  /* Layout */
+  --km-content-max: 1180px;
+  --km-form-max: 680px;
+  --km-field-max: 540px;
+
+  /* Focus */
+  --km-focus-width: 2px;
+  --km-focus-offset: 2px;
+}
+
+
+/* --------------------------------------------------------------------------
+   2. Page foundation
+   -------------------------------------------------------------------------- */
+
+html,
+body,
+body.showActivity {
+  background: var(--km-calm-light) !important;
+  color: var(--km-anchor-dark) !important;
+  font-family: var(--km-font) !important;
+  font-size: var(--km-type-body-size);
+  line-height: var(--km-type-body-line);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html body main {
+  background: transparent !important;
+}
+
+main#app.container,
+#app.container {
+  width: 100%;
+  max-width: var(--km-content-max);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--km-space-5);
+  padding-right: var(--km-space-5);
+}
+
+html body main .main-content {
+  padding-top: var(--km-space-5);
+  padding-bottom: var(--km-space-7);
+}
+
+hr {
+  border: 0 !important;
+  border-top: 1px solid var(--km-divider) !important;
+  margin: var(--km-space-5) 0 !important;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+
+/* --------------------------------------------------------------------------
+   3. Typography and content hierarchy
+   -------------------------------------------------------------------------- */
+
+/* Structure leads: primary page typography uses neutral Anchor tones. */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.page-title,
+.activity-tab-heading {
+  font-family: var(--km-font) !important;
+  color: var(--km-anchor-dark) !important;
+  font-weight: 600 !important;
+  margin-top: 0;
+}
+
+html body main .page-title,
+.page-title {
+  font-size: 45px !important;
+  line-height: 58px !important;
+  letter-spacing: -0.015em;
+  margin: var(--km-space-6) 0 var(--km-space-5) !important;
+}
+
+/* Pindena tab headings act as section/form headings. */
+html body main .activity-tab-heading,
+.activity-tab-heading {
+  color: var(--km-ocean-depth) !important;
+  font-size: 30px !important;
+  line-height: 40px !important;
+  letter-spacing: -0.01em;
+  margin: var(--km-space-6) 0 var(--km-space-4) !important;
+}
+
+p,
+li,
+dd,
+dt,
+.activity-content {
+  color: var(--km-anchor-dark) !important;
+  font-family: var(--km-font) !important;
+  font-size: var(--km-type-body-size);
+  line-height: var(--km-type-body-line);
+}
+
+small,
+.text-muted,
+.breadcrumb,
+.breadcrumb a {
+  color: var(--km-anchor-mid) !important;
+}
+
+strong,
+b {
+  color: inherit;
+  font-weight: 700;
+}
+
+
+/* --------------------------------------------------------------------------
+   4. Rich-text content
+   -------------------------------------------------------------------------- */
+
+/*
+   Rich-text editors should output semantic HTML only. These rules provide a
+   consistent Kongsberg Maritime hierarchy for confirmation messages,
+   descriptions and other editor-authored public content.
+
+   Component-specific headings such as page titles, tab headings, programme
+   items and panel titles are intentionally excluded and are styled elsewhere.
+*/
+
+body.showActivity main#app .main-content h2:not(.page-title):not(.activity-tab-heading):not(.panel-title):not(.modal-title) {
+  color: var(--km-ocean-depth) !important;
+  font-family: var(--km-font) !important;
+  font-size: 24px !important;
+  font-weight: 600 !important;
+  line-height: 36px !important;
+  letter-spacing: -0.01em;
+  margin: 0 0 16px !important;
+}
+
+body.showActivity main#app .main-content h3:not(.list-group-item-heading):not(.panel-title):not(.modal-title) {
+  color: var(--km-anchor-dark) !important;
+  font-family: var(--km-font) !important;
+  font-size: 22px !important;
+  font-weight: 600 !important;
+  line-height: 32px !important;
+  letter-spacing: -0.01em;
+  margin: 24px 0 12px !important;
+}
+
+body.showActivity main#app .main-content h4:not(.list-group-item-heading):not(.panel-title) {
+  color: var(--km-anchor-dark) !important;
+  font-family: var(--km-font) !important;
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  line-height: 26px !important;
+  margin: 24px 0 8px !important;
+}
+
+body.showActivity main#app .main-content h5 {
+  color: var(--km-anchor-dark) !important;
+  font-family: var(--km-font) !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  line-height: 23px !important;
+  margin: 20px 0 8px !important;
+}
+
+body.showActivity main#app .main-content h6 {
+  color: var(--km-anchor-mid) !important;
+  font-family: var(--km-font) !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  line-height: 20px !important;
+  margin: 20px 0 8px !important;
+}
+
+body.showActivity main#app .main-content p {
+  margin: 0 0 16px;
+}
+
+body.showActivity main#app .main-content p:last-child {
+  margin-bottom: 0;
+}
+
+body.showActivity main#app .main-content ul:not(.nav):not(.nav-tabs):not(.tabbar-collapse),
+body.showActivity main#app .main-content ol {
+  margin: 0 0 16px;
+  padding-left: 24px;
+}
+
+body.showActivity main#app .main-content ul:not(.nav):not(.nav-tabs):not(.tabbar-collapse) > li,
+body.showActivity main#app .main-content ol > li {
+  margin-bottom: 6px;
+}
+
+body.showActivity main#app .main-content ul:not(.nav):not(.nav-tabs):not(.tabbar-collapse) > li:last-child,
+body.showActivity main#app .main-content ol > li:last-child {
+  margin-bottom: 0;
+}
+
+body.showActivity main#app .main-content blockquote {
+  background: transparent !important;
+  border: 0 !important;
+  border-left: 4px solid var(--km-nordic-teal) !important;
+  color: var(--km-anchor-dark) !important;
+  font-family: var(--km-font) !important;
+  font-size: 18px !important;
+  font-style: normal !important;
+  line-height: 26px !important;
+  margin: 24px 0 !important;
+  padding: 4px 0 4px 20px !important;
+}
+
+body.showActivity main#app .main-content blockquote p {
+  font-size: inherit !important;
+  line-height: inherit !important;
+}
+
+body.showActivity main#app .main-content strong,
+body.showActivity main#app .main-content b {
+  font-weight: 700;
+}
+
+body.showActivity main#app .main-content em,
+body.showActivity main#app .main-content i {
+  font-style: italic;
+}
+
+
+/* --------------------------------------------------------------------------
+   5. Links
+   -------------------------------------------------------------------------- */
+
+/*
+   Default content-link treatment for light page content.
+   Component-specific link colours may override this where context requires it.
+*/
+body.showActivity main#app .main-content a:not(.btn):not([role="tab"]) {
+  color: var(--km-nordic-teal);
+  text-decoration: none;
+}
+
+body.showActivity main#app .main-content a:not(.btn):not([role="tab"]):visited {
+  color: var(--km-nordic-teal);
+}
+
+body.showActivity main#app .main-content a:not(.btn):not([role="tab"]):hover {
+  color: var(--km-nordic-teal-dark);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+body.showActivity main#app .main-content a:not(.btn):not([role="tab"]):focus {
+  color: var(--km-nordic-teal-dark);
+}
+
+body.showActivity main#app a:focus-visible {
+  outline: var(--km-focus-width) solid var(--km-anchor-dark) !important;
+  outline-offset: var(--km-focus-offset);
+  border-radius: var(--km-radius-control);
+}
+
+
+/* --------------------------------------------------------------------------
+   6. Event/banner imagery
+   -------------------------------------------------------------------------- */
+
+.activity-header img,
+.activity-header picture img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 0;
+  border-radius: 0;
+}
+
+
+/* --------------------------------------------------------------------------
+   7. Pindena tab compatibility
+   -------------------------------------------------------------------------- */
+
+/*
+   Pindena's custom-theme mode can omit part of the default Bootstrap/Pindena
+   tab presentation layer. These minimal rules restore the platform's expected
+   navigation and active-pane behaviour without recreating the vendor CSS.
+
+   JavaScript still controls which navigation item and tab pane receives the
+   .active class. KM CSS only defines how those states are laid out/displayed.
+*/
+
+/* Navigation list reset */
+body.showActivity main#app .tabbar-collapse,
+body.showActivity main#app .nav-tabs {
+  list-style: none !important;
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+body.showActivity main#app .tabbar-collapse::before,
+body.showActivity main#app .tabbar-collapse::after,
+body.showActivity main#app .nav-tabs::before,
+body.showActivity main#app .nav-tabs::after {
+  content: " ";
+  display: table;
+}
+
+body.showActivity main#app .tabbar-collapse::after,
+body.showActivity main#app .nav-tabs::after {
+  clear: both;
+}
+
+body.showActivity main#app .tabbar-collapse > li,
+body.showActivity main#app .nav-tabs > li {
+  display: block;
+  position: relative;
+}
+
+body.showActivity main#app .tabbar-collapse > li > a,
+body.showActivity main#app .nav-tabs > li > a {
+  display: block;
+  position: relative;
+}
+
+/* Critical tab visibility */
+body.showActivity main#app .tab-content > .tab-pane {
+  display: none !important;
+}
+
+body.showActivity main#app .tab-content > .tab-pane.active,
+body.showActivity main#app .tab-content > .active {
+  display: block !important;
+}
+
+/* Desktop tab row */
+@media (min-width: 750px) {
+  body.showActivity main#app .tabbar-collapse > li,
+  body.showActivity main#app .nav-tabs > li {
+    float: left;
+  }
+}
+
+/* Bootstrap-style collapse state used by Pindena's mobile tab navigation */
+@media (max-width: 749px) {
+  body.showActivity main#app .tabbar-collapse.collapse:not(.in):not(.show) {
+    display: none !important;
+  }
+
+  body.showActivity main#app .tabbar-collapse.collapse.in,
+  body.showActivity main#app .tabbar-collapse.collapse.show {
+    display: block !important;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   8. Tabs and navigation
+   -------------------------------------------------------------------------- */
+
+/*
+   Desktop: Pindena's tab list remains visible and uses a flat underline model.
+   Mobile: Pindena's own .tabbar-toggle / .tabbar-collapse behaviour is retained
+   and branded rather than replaced with a custom navigation mechanism.
+*/
+.nav-tabs,
+ul.nav-tabs,
+.tabbar-collapse {
+  border: 0 !important;
+  border-bottom: 1px solid var(--km-anchor-light) !important;
+}
+
+.nav-tabs > li {
+  margin-bottom: -1px !important;
+}
+
+.nav-tabs > li > a,
+.tabbar-collapse > li > a,
+[role="tab"] {
+  background: transparent !important;
+  border: 0 !important;
+  border-bottom: 3px solid transparent !important;
+  border-radius: 0 !important;
+  color: var(--km-anchor) !important;
+  font-family: var(--km-font) !important;
+  font-size: 15px;
+  font-weight: 600 !important;
+  line-height: 22px;
+  padding: 12px 16px 10px !important;
+  text-decoration: none !important;
+}
+
+.nav-tabs > li > a:hover,
+.tabbar-collapse > li > a:hover,
+[role="tab"]:hover {
+  background: transparent !important;
+  border-bottom-color: var(--km-nordic-teal-light) !important;
+  color: var(--km-nordic-teal) !important;
+  text-decoration: none !important;
+}
+
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus,
+.tabbar-collapse > li.active > a,
+.tabbar-collapse > li.active > a:hover,
+.tabbar-collapse > li.active > a:focus,
+[role="tab"][aria-selected="true"] {
+  background: transparent !important;
+  border: 0 !important;
+  border-bottom: 3px solid var(--km-nordic-teal) !important;
+  color: var(--km-ocean-depth) !important;
+  font-weight: 700 !important;
+}
+
+.nav-tabs > li > a:focus-visible,
+.tabbar-collapse > li > a:focus-visible,
+[role="tab"]:focus-visible {
+  outline: var(--km-focus-width) solid var(--km-anchor-dark) !important;
+  outline-offset: 1px;
+}
+
+/* Pindena mobile tab trigger */
+.tabbar-header {
+  border: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.tabbar-header .tabbar-toggle {
+  align-items: center;
+  background: var(--km-white) !important;
+  border: 1px solid var(--km-control-border) !important;
+  border-radius: var(--km-radius-control) !important;
+  box-shadow: none !important;
+  color: var(--km-anchor-dark) !important;
+  display: inline-flex;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 10px 12px !important;
+}
+
+.tabbar-header .tabbar-toggle:hover {
+  background: var(--km-calm-light-02) !important;
+  border-color: var(--km-anchor) !important;
+}
+
+.tabbar-header .tabbar-toggle:focus-visible {
+  outline: var(--km-focus-width) solid var(--km-anchor-dark) !important;
+  outline-offset: var(--km-focus-offset);
+}
+
+.tabbar-header .tabbar-toggle .icon-bar {
+  background-color: var(--km-anchor) !important;
+  border-radius: 0 !important;
+  height: 2px;
+}
+
+@media (max-width: 749px) {
+  .tabbar-header {
+    display: block !important;
+  }
+
+  .tabbar-collapse {
+    background: var(--km-white) !important;
+    border: 1px solid var(--km-calm-light-02) !important;
+    border-radius: var(--km-radius-row) !important;
+    margin-top: 8px;
+    overflow: hidden;
+  }
+
+  .tabbar-collapse > li {
+    float: none !important;
+    margin: 0 !important;
+  }
+
+  .tabbar-collapse > li > a {
+    border: 0 !important;
+    border-bottom: 1px solid var(--km-calm-light-02) !important;
+    display: block !important;
+    min-height: 44px;
+    padding: 11px 16px !important;
+    position: relative;
+  }
+
+  .tabbar-collapse > li:last-child > a {
+    border-bottom: 0 !important;
+  }
+
+  .tabbar-collapse > li > a:hover {
+    background: var(--km-calm-light-01) !important;
+    border-bottom-color: var(--km-calm-light-02) !important;
+  }
+
+  .tabbar-collapse > li.active > a,
+  .tabbar-collapse > li.active > a:hover,
+  .tabbar-collapse > li.active > a:focus {
+    background: var(--km-aqua-light) !important;
+    border: 0 !important;
+    border-left: 3px solid var(--km-nordic-teal) !important;
+    color: var(--km-ocean-depth) !important;
+  }
+}
+
+@media (min-width: 750px) {
+  .tabbar-header {
+    display: none !important;
+  }
+
+  .tabbar-collapse {
+    height: auto !important;
+  }
+
+  .tabbar-collapse.collapse {
+    display: block !important;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   9. Buttons and action hierarchy
+   -------------------------------------------------------------------------- */
+
+/* Text actions remain links, even where Pindena gives them .btn styling. */
+a.btn:not(.btn-primary):not(.btn-success):not(.btn-register):not(.btn-danger):not(.btn-warning),
+.btn-link {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  color: var(--km-nordic-teal) !important;
+  font-family: var(--km-font) !important;
+  font-size: var(--km-type-ui-size);
+  font-weight: 600 !important;
+  line-height: var(--km-type-ui-line);
+  min-height: 0;
+  padding: 7px 6px 7px 0 !important;
+  text-decoration: none !important;
+}
+
+a.btn:not(.btn-primary):not(.btn-success):not(.btn-register):not(.btn-danger):not(.btn-warning):hover,
+.btn-link:hover {
+  color: var(--km-nordic-teal-dark) !important;
+  text-decoration: underline !important;
+  text-underline-offset: 4px;
+}
+
+/* Primary action: current KM digital behaviour. */
+.btn-primary,
+.btn.btn-primary,
+.btn-success,
+.btn.btn-success,
+.btn-register.btn-primary,
+.btn.btn-primary.btn-register,
+body.showActivity main#app .tab-pane.form#form button[type="submit"],
+body.showActivity main#app .tab-pane.form#form input[type="submit"] {
+  align-items: center;
+  background: var(--km-dynamic-aqua) !important;
+  border: 2px solid transparent !important;
+  border-radius: var(--km-radius-control) !important;
+  box-shadow: none !important;
+  color: var(--km-anchor-dark) !important;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: var(--km-font) !important;
+  font-size: 16px;
+  font-weight: 600 !important;
+  justify-content: center;
+  letter-spacing: normal;
+  line-height: 24px !important;
+  min-height: 44px;
+  min-width: 145px;
+  padding: 8px 24px !important;
+  text-align: center;
+  text-decoration: none !important;
+  transition: background-color .2s ease-out, color .2s ease-out;
+}
+
+.btn-primary:hover,
+.btn.btn-primary:hover,
+.btn-success:hover,
+.btn.btn-success:hover,
+.btn-register.btn-primary:hover,
+.btn.btn-primary.btn-register:hover,
+body.showActivity main#app .tab-pane.form#form button[type="submit"]:hover,
+body.showActivity main#app .tab-pane.form#form input[type="submit"]:hover {
+  background: var(--km-aqua-hover) !important;
+  color: var(--km-anchor-dark) !important;
+  text-decoration: none !important;
+}
+
+.btn-primary:active,
+.btn.btn-primary:active,
+.btn-success:active,
+.btn.btn-success:active,
+.btn-register.btn-primary:active,
+.btn.btn-primary.btn-register:active,
+body.showActivity main#app .tab-pane.form#form button[type="submit"]:active,
+body.showActivity main#app .tab-pane.form#form input[type="submit"]:active {
+  background: var(--km-nordic-teal) !important;
+  color: var(--km-calm-light) !important;
+}
+
+.btn-primary:focus,
+.btn-success:focus,
+.btn-register:focus,
+body.showActivity main#app .tab-pane.form#form button[type="submit"]:focus,
+body.showActivity main#app .tab-pane.form#form input[type="submit"]:focus {
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.btn-primary:focus-visible,
+.btn-success:focus-visible,
+.btn-register:focus-visible,
+body.showActivity main#app .tab-pane.form#form button[type="submit"]:focus-visible,
+body.showActivity main#app .tab-pane.form#form input[type="submit"]:focus-visible {
+  outline: var(--km-focus-width) solid var(--km-anchor-dark) !important;
+  outline-offset: var(--km-focus-offset);
+}
+
+.btn-primary:disabled,
+.btn-primary.disabled,
+.btn-primary[aria-disabled="true"],
+.btn-success:disabled,
+.btn-success.disabled,
+.btn-register:disabled,
+body.showActivity main#app .tab-pane.form#form button[type="submit"]:disabled,
+body.showActivity main#app .tab-pane.form#form input[type="submit"]:disabled {
+  background: var(--km-anchor-light) !important;
+  color: var(--km-anchor-mid) !important;
+  cursor: not-allowed !important;
+  opacity: 1 !important;
+}
+
+/* Secondary action: outlined, neutral and subordinate to the primary CTA. */
+.btn-default,
+.btn.btn-default,
+.btn-secondary,
+button.btn-default {
+  background: transparent !important;
+  border: 2px solid var(--km-anchor) !important;
+  border-radius: var(--km-radius-control) !important;
+  box-shadow: none !important;
+  color: var(--km-anchor-dark) !important;
+  font-family: var(--km-font) !important;
+  font-size: 16px;
+  font-weight: 600 !important;
+  line-height: 24px;
+  min-height: 44px;
+  padding: 8px 24px !important;
+  text-decoration: none !important;
+}
+
+.btn-default:hover,
+.btn.btn-default:hover,
+.btn-secondary:hover,
+button.btn-default:hover {
+  background: var(--km-calm-light-02) !important;
+  border-color: var(--km-anchor) !important;
+  color: var(--km-anchor) !important;
+}
+
+.btn-default:active,
+.btn.btn-default:active,
+.btn-secondary:active,
+button.btn-default:active {
+  background: var(--km-anchor) !important;
+  border-color: var(--km-anchor-dark) !important;
+  color: var(--km-calm-light) !important;
+}
+
+.btn-default:focus-visible,
+.btn-secondary:focus-visible,
+button.btn-default:focus-visible {
+  outline: var(--km-focus-width) solid var(--km-anchor) !important;
+  outline-offset: var(--km-focus-offset);
+}
+
+
+/* Generic input/reset controls are secondary actions unless explicitly primary. */
+body.showActivity main#app .tab-pane.form#form input[type="button"]:not(.btn-primary):not(.btn-success):not(.btn-register),
+body.showActivity main#app .tab-pane.form#form input[type="reset"]:not(.btn-primary):not(.btn-success):not(.btn-register) {
+  background: transparent !important;
+  border: 2px solid var(--km-anchor) !important;
+  border-radius: var(--km-radius-control) !important;
+  box-shadow: none !important;
+  color: var(--km-anchor-dark) !important;
+  cursor: pointer;
+  font-family: var(--km-font) !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  line-height: 24px !important;
+  min-height: 44px;
+  padding: 8px 24px !important;
+}
+
+body.showActivity main#app .tab-pane.form#form input[type="button"]:not(.btn-primary):not(.btn-success):not(.btn-register):hover,
+body.showActivity main#app .tab-pane.form#form input[type="reset"]:not(.btn-primary):not(.btn-success):not(.btn-register):hover {
+  background: var(--km-calm-light-02) !important;
+}
+
+body.showActivity main#app .tab-pane.form#form input[type="button"]:not(.btn-primary):not(.btn-success):not(.btn-register):focus-visible,
+body.showActivity main#app .tab-pane.form#form input[type="reset"]:not(.btn-primary):not(.btn-success):not(.btn-register):focus-visible {
+  outline: var(--km-focus-width) solid var(--km-anchor) !important;
+  outline-offset: var(--km-focus-offset);
+}
+
+/* Functional/destructive actions use system colours, not Heritage Red. */
+.btn-danger,
+button.btn-danger {
+  background: var(--km-error) !important;
+  border: 2px solid transparent !important;
+  border-radius: var(--km-radius-control) !important;
+  color: var(--km-white) !important;
+  font-weight: 600 !important;
+}
+
+.btn-danger:hover,
+button.btn-danger:hover {
+  background: var(--km-error-dark) !important;
+}
+
+.btn-warning,
+button.btn-warning {
+  background: var(--km-warning) !important;
+  border: 2px solid transparent !important;
+  border-radius: var(--km-radius-control) !important;
+  color: var(--km-anchor-dark) !important;
+  font-weight: 600 !important;
+}
+
+
+/* --------------------------------------------------------------------------
+   10. Registration form/action zone
+   -------------------------------------------------------------------------- */
+
+/*
+   Approved light-mode KM form pattern:
+   Calm Light page → Aqua Light action zone → white controls → Dynamic Aqua CTA.
+*/
+body.showActivity main#app .tab-pane.form#form {
+  background: var(--km-aqua-light) !important;
+  border: 0 !important;
+  border-radius: var(--km-radius-action) !important;
+  box-shadow: none !important;
+  box-sizing: border-box;
+  max-width: var(--km-form-max);
+  margin: var(--km-space-5) 0 var(--km-space-6);
+  padding: var(--km-space-6) !important;
+}
+
+body.showActivity main#app .tab-pane.form#form > .activity-tab-heading {
+  color: var(--km-ocean-depth) !important;
+  font-size: 24px !important;
+  line-height: 36px !important;
+  margin: 0 0 var(--km-space-6) !important;
+}
+
+.form-group,
+.form-row {
+  margin-bottom: 20px !important;
+}
+
+body.showActivity main#app .tab-pane.form#form label,
+body.showActivity main#app .tab-pane.form#form .control-label,
+body.showActivity main#app .tab-pane.form#form label.control-label {
+  color: var(--km-anchor-dark) !important;
+  font-family: var(--km-font) !important;
+  font-size: var(--km-type-small-size) !important;
+  font-weight: 600 !important;
+  line-height: var(--km-type-small-line) !important;
+  margin-bottom: 8px !important;
+}
+
+/* Supporting copy attached to a field. */
+body.showActivity main#app .tab-pane.form#form .help-block,
+body.showActivity main#app .tab-pane.form#form .reg-description,
+body.showActivity main#app .tab-pane.form#form .description,
+body.showActivity main#app .tab-pane.form#form small {
+  color: var(--km-anchor-mid) !important;
+  font-family: var(--km-font) !important;
+  font-size: var(--km-type-small-size) !important;
+  font-weight: 400 !important;
+  line-height: var(--km-type-small-line) !important;
+}
+
+/* Required markers remain visible but do not compete with the label. */
+.required-marker,
+html body .required-marker {
+  color: var(--km-anchor-mid) !important;
+  display: inline !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  margin: 0 0 0 6px !important;
+  opacity: 1;
+  text-transform: none !important;
+}
+
+/* Field controls */
+input:not([type="submit"]):not([type="button"]):not([type="reset"]):not([type="checkbox"]):not([type="radio"]),
+select,
+textarea,
+.form-control {
+  background: var(--km-white) !important;
+  border: 1px solid var(--km-control-border) !important;
+  border-radius: var(--km-radius-control) !important;
+  box-shadow: none !important;
+  color: var(--km-anchor-dark) !important;
+  font-family: var(--km-font) !important;
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  line-height: 24px !important;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="number"],
+input[type="url"],
+input[type="date"],
+input[type="time"],
+select,
+.form-control:not(textarea) {
+  box-sizing: border-box;
+  height: 46px !important;
+  min-height: 46px !important;
+  padding: 0 16px !important;
+}
+
+textarea,
+textarea.form-control {
+  min-height: 120px !important;
+  padding: 11px 16px !important;
+  resize: vertical;
+}
+
+body.showActivity main#app .tab-pane.form#form input[type="text"],
+body.showActivity main#app .tab-pane.form#form input[type="email"],
+body.showActivity main#app .tab-pane.form#form input[type="tel"],
+body.showActivity main#app .tab-pane.form#form input[type="number"],
+body.showActivity main#app .tab-pane.form#form input[type="url"],
+body.showActivity main#app .tab-pane.form#form input[type="date"],
+body.showActivity main#app .tab-pane.form#form input[type="time"],
+body.showActivity main#app .tab-pane.form#form select,
+body.showActivity main#app .tab-pane.form#form textarea,
+body.showActivity main#app .tab-pane.form#form .form-control {
+  width: 100%;
+  max-width: var(--km-field-max);
+}
+
+input::placeholder,
+textarea::placeholder,
+.form-control::placeholder {
+  color: var(--km-placeholder) !important;
+  opacity: 1;
+}
+
+input:not([type="submit"]):not([type="button"]):not([type="reset"]):not([type="checkbox"]):not([type="radio"]):focus,
+select:focus,
+textarea:focus,
+.form-control:focus {
+  border-color: var(--km-nordic-teal) !important;
+  box-shadow: none !important;
+  outline: var(--km-focus-width) solid var(--km-anchor-dark) !important;
+  outline-offset: var(--km-focus-offset);
+}
+
+/* Disabled and read-only states */
+input:not([type="submit"]):not([type="button"]):not([type="reset"]):not([type="checkbox"]):not([type="radio"]):disabled,
+select:disabled,
+textarea:disabled,
+.form-control:disabled,
+.form-control[disabled] {
+  background: var(--km-calm-light-02) !important;
+  border-color: var(--km-anchor-light) !important;
+  color: var(--km-anchor-mid) !important;
+  cursor: not-allowed;
+  opacity: 1 !important;
+}
+
+input[readonly],
+textarea[readonly],
+.form-control[readonly] {
+  background: var(--km-calm-light-01) !important;
+  color: var(--km-anchor-mid) !important;
+}
+
+/* Native selection controls */
+input[type="checkbox"],
+input[type="radio"] {
+  accent-color: var(--km-anchor);
+  width: 18px;
+  height: 18px;
+  margin: 2px 8px 0 0;
+  vertical-align: top;
+}
+
+body.showActivity main#app .tab-pane.form#form .checkbox label,
+body.showActivity main#app .tab-pane.form#form .radio label {
+  color: var(--km-anchor-dark) !important;
+  font-size: var(--km-type-small-size) !important;
+  font-weight: 400 !important;
+  line-height: var(--km-type-small-line) !important;
+}
+
+/* Pindena/Maz phone and country selector controls must remain functional UI. */
+.m-country-selector__flag-button,
+.m-country-selector__select,
+[id^="country-selector-flag-button"],
+.m-phone-number-input button,
+.m-country-selector button {
+  box-shadow: none !important;
+  color: var(--km-anchor-dark) !important;
+  font-family: var(--km-font) !important;
+}
+
+/*
+   Do not apply CTA styling to internal phone-selector buttons.
+   Their containing Maz/Pindena control should provide the field boundary.
+*/
+.m-country-selector__flag-button,
+[id^="country-selector-flag-button"],
+.m-phone-number-input button:not([type="submit"]),
+.m-country-selector button:not([type="submit"]) {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+}
+
+/* Bootstrap/Pindena input groups */
+.input-group {
+  max-width: var(--km-field-max);
+}
+
+.input-group .form-control {
+  max-width: none !important;
+}
+
+.input-group-addon,
+.input-group-btn > .btn {
+  background: var(--km-white) !important;
+  border: 1px solid var(--km-control-border) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  color: var(--km-anchor-dark) !important;
+  font-family: var(--km-font) !important;
+  min-height: 46px;
+}
+
+.input-group-addon {
+  font-size: 14px !important;
+  line-height: 22px !important;
+  padding: 11px 14px !important;
+}
+
+.input-group > .form-control:first-child,
+.input-group-addon:first-child,
+.input-group-btn:first-child > .btn {
+  border-radius: var(--km-radius-control) 0 0 var(--km-radius-control) !important;
+}
+
+.input-group > .form-control:last-child,
+.input-group-addon:last-child,
+.input-group-btn:last-child > .btn {
+  border-radius: 0 var(--km-radius-control) var(--km-radius-control) 0 !important;
+}
+
+/* Registration submit is a full-width form action within the field measure. */
+body.showActivity main#app .tab-pane.form#form .btn-primary,
+body.showActivity main#app .tab-pane.form#form .btn-success,
+body.showActivity main#app .tab-pane.form#form .btn-register,
+body.showActivity main#app .tab-pane.form#form button[type="submit"],
+body.showActivity main#app .tab-pane.form#form input[type="submit"] {
+  width: 100%;
+  max-width: var(--km-field-max);
+  min-height: 56px;
+  font-size: 18px !important;
+  line-height: 27px !important;
+  margin-top: var(--km-space-4);
+}
+
+
+/* --------------------------------------------------------------------------
+   11. Registration summary, products and additional participants
+   -------------------------------------------------------------------------- */
+
+.registration-summary {
+  background: var(--km-white) !important;
+  border: 1px solid var(--km-calm-light-02) !important;
+  border-radius: var(--km-radius-row) !important;
+  color: var(--km-anchor-dark) !important;
+  margin-top: var(--km-space-5) !important;
+  padding: var(--km-space-5) !important;
+}
+
+.registration-summary .form-group {
+  margin-bottom: 12px !important;
+  margin-left: 0 !important;
+}
+
+.registration-summary .form-group:last-child {
+  margin-bottom: 0 !important;
+}
+
+.registration-summary label,
+.registration-summary .activity-info-label {
+  color: var(--km-anchor-mid) !important;
+  font-size: var(--km-type-small-size) !important;
+  font-weight: 600 !important;
+  line-height: var(--km-type-small-line) !important;
+  margin-bottom: 2px !important;
+}
+
+.registration-summary .form-control-static {
+  color: var(--km-anchor-dark) !important;
+  font-size: var(--km-type-body-size);
+  line-height: var(--km-type-body-line);
+  padding-top: 0 !important;
+}
+
+.registration-summary .product-item {
+  border-top: 1px solid var(--km-divider);
+  margin-top: 8px;
+  padding-top: 8px;
+}
+
+.registration-summary .product-item:first-child {
+  border-top: 0;
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.registration-summary .subprice .amount,
+.registration-summary .currency,
+.registration-summary .vat-detail,
+.registration-summary .detail,
+body.showActivity main#app .tab-pane.form#form .product-input .subprice .amount,
+body.showActivity main#app .tab-pane.form#form .product-input .currency,
+body.showActivity main#app .tab-pane.form#form .product-input .vat-detail,
+body.showActivity main#app .tab-pane.form#form .product-input .detail,
+body.showActivity main#app .tab-pane.form#form .product-available {
+  color: var(--km-anchor-mid) !important;
+  font-size: var(--km-type-small-size);
+  font-weight: 400 !important;
+  line-height: var(--km-type-small-line);
+}
+
+body.showActivity main#app .tab-pane.form#form .product-input label {
+  width: 100%;
+}
+
+body.showActivity main#app .tab-pane.form#form .product-input.select {
+  padding-top: 7px;
+}
+
+body.showActivity main#app .tab-pane.form#form .product-input.select select {
+  display: inline-block;
+  min-width: 80px;
+  width: auto !important;
+}
+
+body.showActivity main#app .tab-pane.form#form .unavailable-product-name,
+.full-or-invite-only {
+  color: var(--km-anchor-mid) !important;
+  text-decoration: line-through;
+}
+
+.unavailable-badge {
+  background: var(--km-warning-light) !important;
+  border-radius: var(--km-radius-control) !important;
+  color: var(--km-anchor-dark) !important;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 18px;
+  padding: 2px 8px;
+  white-space: nowrap;
+}
+
+body.showActivity main#app .tab-pane.form#form .not-you-link {
+  display: block;
+  margin-top: 4px;
+}
+
+body.showActivity main#app .tab-pane.form#form .form-group-header {
+  color: var(--km-ocean-depth) !important;
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  line-height: 26px !important;
+  margin: 24px 0 12px !important;
+}
+
+/* Additional participant containers remain visually part of the form. */
+body.showActivity main#app .tab-pane.form#form .reg-extra-participant .panel {
+  background: rgba(255, 255, 255, 0.72) !important;
+  border: 1px solid var(--km-calm-light-02) !important;
+  border-radius: var(--km-radius-row) !important;
+  box-shadow: none !important;
+  margin: 16px 0 !important;
+}
+
+body.showActivity main#app .tab-pane.form#form .reg-extra-participant .panel .panel-heading {
+  background: transparent !important;
+  border-bottom: 1px solid var(--km-calm-light-02) !important;
+  color: var(--km-ocean-depth) !important;
+}
+
+body.showActivity main#app .tab-pane.form#form .reg-extra-participant .btn-remove-extra-participant,
+.btn-remove-extra-participant {
+  background: transparent !important;
+  border: 1px solid var(--km-error) !important;
+  border-radius: var(--km-radius-control) !important;
+  box-shadow: none !important;
+  color: var(--km-error) !important;
+  float: none;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  line-height: 20px !important;
+  margin: 0 12px 0 0 !important;
+  min-height: 36px;
+  min-width: 0;
+  padding: 7px 10px !important;
+}
+
+body.showActivity main#app .tab-pane.form#form .reg-extra-participant .btn-remove-extra-participant:hover,
+.btn-remove-extra-participant:hover {
+  background: var(--km-error-light) !important;
+  color: var(--km-error-dark) !important;
+}
+
+/* Payment fields embedded by Stripe follow the same control language. */
+.StripeElement {
+  background: var(--km-white) !important;
+  border: 1px solid var(--km-control-border) !important;
+  border-radius: var(--km-radius-control) !important;
+  box-shadow: none !important;
+  min-height: 46px;
+  padding: 13px 16px !important;
+}
+
+.StripeElement--focus {
+  border-color: var(--km-nordic-teal) !important;
+  box-shadow: none !important;
+  outline: var(--km-focus-width) solid var(--km-anchor-dark) !important;
+  outline-offset: var(--km-focus-offset);
+}
+
+.StripeElement--invalid {
+  border-color: var(--km-error) !important;
+}
+
+
+/* --------------------------------------------------------------------------
+   12. Validation, status and availability messaging
+   -------------------------------------------------------------------------- */
+
+/* Validation: colour supplements, but does not replace, the written message. */
+.has-error .form-control,
+.form-control.is-invalid,
+input[aria-invalid="true"],
+select[aria-invalid="true"],
+textarea[aria-invalid="true"] {
+  border-color: var(--km-error) !important;
+}
+
+.has-error .control-label,
+.has-error .help-block,
+.invalid-feedback,
+.validation-error {
+  color: var(--km-error-dark) !important;
+}
+
+.has-success .form-control,
+.form-control.is-valid {
+  border-color: var(--km-success) !important;
+}
+
+.alert {
+  border: 0 !important;
+  border-left: 4px solid var(--km-anchor-mid) !important;
+  border-radius: var(--km-radius-row) !important;
+  box-shadow: none !important;
+  color: var(--km-anchor-dark) !important;
+  font-family: var(--km-font) !important;
+  padding: 16px 20px !important;
+}
+
+.alert-info {
+  background: var(--km-aqua-light) !important;
+  border-left-color: var(--km-nordic-teal) !important;
+}
+
+.alert-success {
+  background: var(--km-success-light) !important;
+  border-left-color: var(--km-success) !important;
+}
+
+.alert-warning {
+  background: var(--km-warning-light) !important;
+  border-left-color: var(--km-warning) !important;
+}
+
+.alert-danger,
+.alert-error {
+  background: var(--km-error-light) !important;
+  border-left-color: var(--km-error) !important;
+}
+
+
+/* Generic badges */
+.badge {
+  border-radius: var(--km-radius-control) !important;
+  font-family: var(--km-font) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  line-height: 18px !important;
+  padding: 2px 8px !important;
+}
+
+.badge-success {
+  background: var(--km-success) !important;
+  color: var(--km-anchor-dark) !important;
+}
+
+.badge-warning {
+  background: var(--km-warning) !important;
+  color: var(--km-anchor-dark) !important;
+}
+
+.badge-danger {
+  background: var(--km-error) !important;
+  color: var(--km-white) !important;
+}
+
+/* Pindena participant states */
+.badge.registered,
+.badge.confirmed {
+  background: var(--km-success) !important;
+  color: var(--km-anchor-dark) !important;
+}
+
+.badge.reserved {
+  background: var(--km-warning) !important;
+  color: var(--km-anchor-dark) !important;
+}
+
+.badge.invited,
+.badge.list {
+  background: var(--km-aqua-light) !important;
+  color: var(--km-nordic-teal-dark) !important;
+  border: 1px solid var(--km-nordic-teal-light) !important;
+}
+
+/*
+   Declined, deregistered and expired are neutral lifecycle states, not system
+   errors. Safety Red is reserved for errors, failed actions and destructive
+   confirmations.
+*/
+.badge.declined,
+.badge.deregistered,
+.badge.expired {
+  background: var(--km-anchor-light) !important;
+  color: var(--km-anchor-dark) !important;
+}
+
+/* Event availability */
+.event-is-available {
+  background: var(--km-success-light) !important;
+  border: 1px solid var(--km-success) !important;
+  border-radius: var(--km-radius-row) !important;
+  color: var(--km-anchor-dark) !important;
+  min-height: 32px;
+  padding: 6px 10px !important;
+}
+
+.event-is-full {
+  background: var(--km-warning-light) !important;
+  border: 1px solid var(--km-warning) !important;
+  border-radius: var(--km-radius-row) !important;
+  color: var(--km-anchor-dark) !important;
+  min-height: 32px;
+  padding: 6px 10px !important;
+}
+
+.event-is-available .fc-event-dot {
+  background: var(--km-success) !important;
+}
+
+.event-is-full .fc-event-dot {
+  background: var(--km-warning) !important;
+}
+
+
+/* --------------------------------------------------------------------------
+   13. Event information panel: time and place
+   -------------------------------------------------------------------------- */
+
+.panel.activity-time-and-place,
+.activity-time-and-place {
+  background: var(--km-white) !important;
+  border: 1px solid var(--km-calm-light-02) !important;
+  border-top: 8px solid var(--km-ocean-depth) !important;
+  border-radius: var(--km-radius-row) !important;
+  box-shadow: none !important;
+  overflow: hidden;
+}
+
+/*
+   The KM brand strip is provided by the panel border rather than by testing
+   whether Pindena emitted a truly empty heading node. The unused platform
+   heading is suppressed so whitespace from server rendering cannot create an
+   unintended blank heading area.
+*/
+.panel.activity-time-and-place > .panel-heading,
+.activity-time-and-place > .panel-heading {
+  background: transparent !important;
+  border: 0 !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+}
+
+/*
+   Preserve any future interactive or labelled content Pindena may place in
+   the heading. Whitespace-only headings collapse naturally because the
+   heading itself has no padding or minimum height.
+*/
+.panel.activity-time-and-place > .panel-heading > a,
+.panel.activity-time-and-place > .panel-heading > button,
+.panel.activity-time-and-place > .panel-heading > .panel-title,
+.panel.activity-time-and-place > .panel-heading > [role="button"],
+.activity-time-and-place > .panel-heading > a,
+.activity-time-and-place > .panel-heading > button,
+.activity-time-and-place > .panel-heading > .panel-title,
+.activity-time-and-place > .panel-heading > [role="button"] {
+  display: inline-flex;
+  align-items: center;
+  color: var(--km-ocean-depth) !important;
+  font-family: var(--km-font) !important;
+  font-size: 14px;
+  font-weight: 600 !important;
+  line-height: 20px;
+  padding: 8px 12px !important;
+}
+
+.panel.activity-time-and-place .panel-body,
+.activity-time-and-place > .panel-body {
+  padding: var(--km-space-5) !important;
+}
+
+/* Remove inherited Bootstrap/grid decoration from the information rows. */
+.panel.activity-time-and-place .panel-body .row,
+.panel.activity-time-and-place .panel-body .row-date,
+.panel.activity-time-and-place .panel-body [class*="col-"],
+.panel.activity-time-and-place .activity-info-label,
+.panel.activity-time-and-place .activity-info-value,
+.panel.activity-time-and-place .activity-info-value div {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.panel.activity-time-and-place .row.row-date {
+  align-items: baseline;
+  column-gap: var(--km-space-5);
+  display: grid !important;
+  grid-template-columns: 180px minmax(0, 1fr);
+  margin: 0 0 12px 0 !important;
+}
+
+.panel.activity-time-and-place .row.row-date:last-child {
+  margin-bottom: 0 !important;
+}
+
+.panel.activity-time-and-place .activity-info-label {
+  color: var(--km-anchor-dark) !important;
+  font-size: var(--km-type-small-size);
+  font-weight: 600 !important;
+  line-height: var(--km-type-small-line);
+  margin: 0 !important;
+}
+
+.panel.activity-time-and-place .activity-info-value,
+.panel.activity-time-and-place .activity-info-value div {
+  color: var(--km-anchor-dark) !important;
+  font-size: var(--km-type-body-size);
+  line-height: var(--km-type-body-line);
+  margin: 0 !important;
+}
+
+
+/* --------------------------------------------------------------------------
+   14. General panels, cards and wells
+   -------------------------------------------------------------------------- */
+
+.panel,
+.well {
+  background: var(--km-white) !important;
+  border: 1px solid var(--km-calm-light-02) !important;
+  border-radius: var(--km-radius-row) !important;
+  box-shadow: none !important;
+}
+
+.card {
+  background: var(--km-white) !important;
+  border: 1px solid var(--km-calm-light-02) !important;
+  border-radius: var(--km-radius-card) !important;
+  box-shadow: none !important;
+}
+
+.panel-heading,
+.card-header {
+  background: transparent !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--km-calm-light-02) !important;
+  color: var(--km-ocean-depth) !important;
+  font-weight: 600 !important;
+}
+
+.panel-title {
+  color: var(--km-ocean-depth) !important;
+  font-weight: 600 !important;
+}
+
+.panel-body,
+.card-body {
+  padding: var(--km-space-5) !important;
+}
+
+
+/* --------------------------------------------------------------------------
+   15. Tables
+   -------------------------------------------------------------------------- */
+
+table {
+  border-color: var(--km-divider) !important;
+  color: var(--km-anchor-dark) !important;
+  font-family: var(--km-font) !important;
+}
+
+th {
+  background: var(--km-calm-light-02) !important;
+  color: var(--km-anchor-dark) !important;
+  font-size: var(--km-type-small-size);
+  font-weight: 600 !important;
+  line-height: var(--km-type-small-line);
+}
+
+td {
+  color: var(--km-anchor-dark) !important;
+  font-size: var(--km-type-small-size);
+  line-height: var(--km-type-small-line);
+}
+
+td,
+th {
+  border-color: var(--km-divider) !important;
+  padding: 12px 16px !important;
+}
+
+
+/* --------------------------------------------------------------------------
+   16. Programme
+   -------------------------------------------------------------------------- */
+
+.tab-pane.program .activity-tab-heading {
+  margin-bottom: var(--km-space-4) !important;
+}
+
+/* Programme introductory/theme heading. */
+.tab-pane.program > h4,
+.tab-pane.program .program-intro h4 {
+  color: var(--km-nordic-teal) !important;
+  font-size: 22px !important;
+  font-style: italic !important;
+  font-weight: 600 !important;
+  line-height: 32px !important;
+  margin: 12px 0 10px !important;
+}
+
+/* Programme rows use a calm, flat card pattern. */
+.tab-pane.program .list-group.list-group-program .list-group-item {
+  background: var(--km-white) !important;
+  border: 1px solid var(--km-calm-light-02) !important;
+  border-radius: var(--km-radius-row) !important;
+  box-shadow: none !important;
+  margin-bottom: 4px !important;
+  padding: 18px 24px !important;
+}
+
+/* Programme item titles. */
+.tab-pane.program .list-group.list-group-program .list-group-item a,
+.tab-pane.program .list-group.list-group-program .list-group-item .list-group-item-heading,
+.tab-pane.program .list-group.list-group-program .list-group-item h3,
+.tab-pane.program .list-group.list-group-program .list-group-item h4 {
+  color: var(--km-anchor-dark) !important;
+  font-size: 22px !important;
+  font-style: normal !important;
+  font-weight: 600 !important;
+  line-height: 32px !important;
+  text-decoration: none !important;
+}
+
+.tab-pane.program .list-group.list-group-program .list-group-item a:hover,
+.tab-pane.program .list-group.list-group-program .list-group-item a:focus {
+  color: var(--km-nordic-teal-dark) !important;
+  text-decoration: underline !important;
+  text-underline-offset: 4px;
+}
+
+/* Programme metadata. */
+.tab-pane.program .program-time,
+.tab-pane.program .list-group-item-text {
+  color: var(--km-anchor-mid) !important;
+  font-size: var(--km-type-small-size) !important;
+  line-height: var(--km-type-small-line) !important;
+}
+
+.tab-pane.program .program-time {
+  font-weight: 600 !important;
+}
+
+.tab-pane.program .km-speakers {
+  margin-top: 8px;
+}
+
+.tab-pane.program .km-speaker {
+  color: var(--km-anchor-dark) !important;
+  font-family: var(--km-font) !important;
+  font-size: var(--km-type-small-size);
+  line-height: var(--km-type-small-line);
+  margin: 3px 0;
+}
+
+.tab-pane.program .km-speaker .km-name {
+  font-weight: 600;
+}
+
+.tab-pane.program .km-speaker .km-org {
+  color: var(--km-anchor-mid) !important;
+  font-weight: 400;
+}
+
+
+/* --------------------------------------------------------------------------
+   17. Participant lists
+   -------------------------------------------------------------------------- */
+
+.tab-pane.participants .list-group.list-group-participants {
+  border: 1px solid var(--km-calm-light-02) !important;
+  border-radius: var(--km-radius-row) !important;
+  overflow: hidden;
+}
+
+.tab-pane.participants .list-group.list-group-participants .list-group-item {
+  background: var(--km-white) !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--km-calm-light-02) !important;
+  color: var(--km-anchor-dark) !important;
+  padding: 12px 16px !important;
+}
+
+.tab-pane.participants .list-group.list-group-participants .list-group-item:last-child {
+  border-bottom: 0 !important;
+}
+
+.tab-pane.participants .list-group.list-group-participants .list-group-item:first-child {
+  background: var(--km-calm-light-02) !important;
+  color: var(--km-anchor-dark) !important;
+  font-weight: 600 !important;
+}
+
+.tab-pane.participants .list-group.list-group-participants div {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tab-pane.participants .table {
+  background: var(--km-white) !important;
+  border: 1px solid var(--km-calm-light-02) !important;
+  border-radius: var(--km-radius-row) !important;
+}
+
+
+/* --------------------------------------------------------------------------
+   18. Pindena structural UI
+   -------------------------------------------------------------------------- */
+
+.tab-content {
+  margin-bottom: var(--km-space-4) !important;
+}
+
+.activity-tab-header,
+.activity-tab-footer {
+  margin: var(--km-space-4) 0 !important;
+}
+
+.activity-tab-description,
+.activity-image-container img {
+  margin-bottom: var(--km-space-4) !important;
+}
+
+.activity-header + .main-content .tab-content {
+  border-top: 1px solid var(--km-divider) !important;
+}
+
+#tabbar + .tab-content {
+  border-top: 0 !important;
+}
+
+/*
+   Pindena owns the position and responsive behaviour of the right-column
+   action area. KM only applies its visual surface treatment.
+*/
+@media (max-width: 992px) {
+  #right-column-extras {
+    background: var(--km-white) !important;
+    border-top: 1px solid var(--km-divider) !important;
+    box-shadow: none !important;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   19. Dropdowns, modals, tooltips and pagination
+   -------------------------------------------------------------------------- */
+
+.dropdown-menu {
+  background: var(--km-white) !important;
+  border: 1px solid var(--km-calm-light-02) !important;
+  border-radius: var(--km-radius-row) !important;
+  box-shadow: 0 8px 24px rgba(27, 36, 40, 0.12) !important;
+  font-family: var(--km-font) !important;
+  padding: 4px 0 !important;
+}
+
+.dropdown-menu > li > a,
+.dropdown-item {
+  color: var(--km-anchor-dark) !important;
+  font-family: var(--km-font) !important;
+  font-size: 14px !important;
+  line-height: 22px !important;
+  padding: 9px 16px !important;
+  text-decoration: none !important;
+}
+
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus,
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background: var(--km-calm-light-01) !important;
+  color: var(--km-nordic-teal-dark) !important;
+  text-decoration: none !important;
+}
+
+.modal-content,
+.swal-modal,
+.sweet-modal {
+  background: var(--km-white) !important;
+  border: 1px solid var(--km-calm-light-02) !important;
+  border-radius: var(--km-radius-card) !important;
+  box-shadow: 0 12px 36px rgba(27, 36, 40, 0.18) !important;
+  color: var(--km-anchor-dark) !important;
+  font-family: var(--km-font) !important;
+}
+
+.modal-header,
+.modal-footer {
+  border-color: var(--km-divider) !important;
+}
+
+.modal-title,
+.swal-title,
+.sweet-modal .sweet-title h2 {
+  color: var(--km-ocean-depth) !important;
+  font-family: var(--km-font) !important;
+  font-weight: 600 !important;
+}
+
+.modal-body,
+.swal-text,
+.swal-content,
+.sweet-modal {
+  color: var(--km-anchor-dark) !important;
+  font-family: var(--km-font) !important;
+}
+
+.swal-button--confirm {
+  background: var(--km-dynamic-aqua) !important;
+  color: var(--km-anchor-dark) !important;
+}
+
+.swal-button--confirm:hover {
+  background: var(--km-aqua-hover) !important;
+}
+
+/*
+   Pindena's existing SweetAlert integration uses this custom class for
+   destructive confirmation actions.
+*/
+.swal-custom--danger {
+  background: var(--km-error) !important;
+  color: var(--km-white) !important;
+}
+
+.tooltip {
+  font-family: var(--km-font) !important;
+}
+
+.tooltip-inner {
+  background: var(--km-anchor-dark) !important;
+  border-radius: var(--km-radius-control) !important;
+  color: var(--km-white) !important;
+  font-family: var(--km-font) !important;
+  font-size: 13px !important;
+  line-height: 18px !important;
+  padding: 6px 10px !important;
+}
+
+.pagination > li > a,
+.pagination > li > span {
+  background: var(--km-white) !important;
+  border-color: var(--km-calm-light-02) !important;
+  color: var(--km-nordic-teal) !important;
+}
+
+.pagination > li > a:hover,
+.pagination > li > a:focus {
+  background: var(--km-calm-light-01) !important;
+  border-color: var(--km-anchor-light) !important;
+  color: var(--km-nordic-teal-dark) !important;
+}
+
+.pagination > .active > a,
+.pagination > .active > span,
+.pagination > .active > a:hover,
+.pagination > .active > span:hover {
+  background: var(--km-nordic-teal) !important;
+  border-color: var(--km-nordic-teal) !important;
+  color: var(--km-white) !important;
+}
+
+
+/* --------------------------------------------------------------------------
+   20. Footer
+   -------------------------------------------------------------------------- */
+
+footer,
+.site-footer,
+.container.site-footer {
+  background: transparent !important;
+  border: 0 !important;
+  border-top: 1px solid var(--km-divider) !important;
+  color: var(--km-anchor-mid) !important;
+  margin-top: var(--km-space-6) !important;
+  padding-top: var(--km-space-4) !important;
+}
+
+footer *,
+.site-footer *,
+.container.site-footer * {
+  color: var(--km-anchor-mid) !important;
+}
+
+footer a,
+.site-footer a,
+.container.site-footer a,
+html .site-footer a {
+  color: var(--km-nordic-teal) !important;
+  text-decoration: underline !important;
+  text-underline-offset: 4px;
+}
+
+
+/* --------------------------------------------------------------------------
+   21. Decorative/background elements
+   -------------------------------------------------------------------------- */
+
+.watermark {
+  opacity: 0.06 !important;
+}
+
+
+/* --------------------------------------------------------------------------
+   22. Responsive behaviour
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 768px) {
+  main#app.container,
+  #app.container {
+    padding-left: var(--km-space-4);
+    padding-right: var(--km-space-4);
+  }
+
+  html body main .main-content {
+    padding-top: var(--km-space-4);
+    padding-bottom: var(--km-space-6);
+  }
+
+  html body main .page-title,
+  .page-title {
+    font-size: 34px !important;
+    line-height: 42px !important;
+    margin-top: var(--km-space-5) !important;
+  }
+
+  html body main .activity-tab-heading,
+  .activity-tab-heading {
+    font-size: 24px !important;
+    line-height: 32px !important;
+  }
+
+  body.showActivity main#app .main-content h2:not(.page-title):not(.activity-tab-heading):not(.panel-title):not(.modal-title) {
+    font-size: 22px !important;
+    line-height: 32px !important;
+  }
+
+  body.showActivity main#app .main-content h3:not(.list-group-item-heading):not(.panel-title):not(.modal-title) {
+    font-size: 20px !important;
+    line-height: 28px !important;
+  }
+
+  body.showActivity main#app .tab-pane.form#form {
+    max-width: 100%;
+    padding: 20px !important;
+  }
+
+  body.showActivity main#app .tab-pane.form#form input[type="text"],
+  body.showActivity main#app .tab-pane.form#form input[type="email"],
+  body.showActivity main#app .tab-pane.form#form input[type="tel"],
+  body.showActivity main#app .tab-pane.form#form input[type="number"],
+  body.showActivity main#app .tab-pane.form#form input[type="url"],
+  body.showActivity main#app .tab-pane.form#form input[type="date"],
+  body.showActivity main#app .tab-pane.form#form input[type="time"],
+  body.showActivity main#app .tab-pane.form#form select,
+  body.showActivity main#app .tab-pane.form#form textarea,
+  body.showActivity main#app .tab-pane.form#form .form-control,
+  body.showActivity main#app .tab-pane.form#form .btn-primary,
+  body.showActivity main#app .tab-pane.form#form .btn-success,
+  body.showActivity main#app .tab-pane.form#form .btn-register,
+  body.showActivity main#app .tab-pane.form#form button[type="submit"],
+  body.showActivity main#app .tab-pane.form#form input[type="submit"] {
+    max-width: 100%;
+  }
+
+  .panel.activity-time-and-place .row.row-date {
+    display: block !important;
+    margin-bottom: var(--km-space-4) !important;
+  }
+
+  .panel.activity-time-and-place .activity-info-label {
+    margin-bottom: 2px !important;
+  }
+
+  .tab-pane.program .list-group.list-group-program .list-group-item {
+    padding: 16px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-tabs > li > a,
+  .tabbar-collapse > li > a,
+  [role="tab"] {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  .tab-pane.program > h4,
+  .tab-pane.program .program-intro h4,
+  .tab-pane.program .list-group.list-group-program .list-group-item a,
+  .tab-pane.program .list-group.list-group-program .list-group-item .list-group-item-heading,
+  .tab-pane.program .list-group.list-group-program .list-group-item h3,
+  .tab-pane.program .list-group.list-group-program .list-group-item h4 {
+    font-size: 20px !important;
+    line-height: 28px !important;
+  }
+}
+
+
+
+/* Preserve compact Pindena controls at narrow widths. */
+@media (max-width: 480px) {
+  .form-recaptcha iframe {
+    transform: scale(.8);
+    transform-origin: left;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   23. Reduced-motion preference
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  button,
+  input[type="submit"],
+  a {
+    transition: none !important;
+  }
+}
